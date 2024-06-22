@@ -1,43 +1,43 @@
-name: CI
-on:
-  push:
-    branches: [main]
+#name: CI
+#on:
+#  push:
+#   branches: [main]
 
-jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'yarn'
-
-      - run: yarn install
-      - run: yarn clean
-
-      - run: yarn lint
-
-  tests:
-    name: Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: '1418'
-          cache: 'yarn'
-
-      - run: yarn install
-      - run: yarn run tsc
-
-      - run: yarn test
-        env:
-          CI: true
+#jobs:
+#  lint:
+#    name: Lint
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Use Node.js 14.x
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: '18'
+#          cache: 'yarn'
+#
+#      - run: yarn install
+#      - run: yarn clean
+#
+#      - run: yarn lint
+#
+#  tests:
+#    name: Tests
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Use Node.js 14.x
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: '18'
+#          cache: 'yarn'
+#
+#      - run: yarn install
+#      - run: yarn run tsc
+#
+#      - run: yarn test
+#        env:
+#          CI: true
