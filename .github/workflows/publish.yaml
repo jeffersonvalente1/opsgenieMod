@@ -27,10 +27,8 @@ jobs:
       - name: Build
         run: yarn build
       
-      - run: npm ci
-
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
