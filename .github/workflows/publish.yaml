@@ -26,7 +26,6 @@ jobs:
       - name: Build
         run: yarn build
 
-      - run: ci
       - name: Publish to npm
         run: npm publish --provenance --access public
         env:
