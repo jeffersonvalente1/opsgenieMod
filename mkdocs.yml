@@ -1,0 +1,12 @@
+site_name: 'Backstage Opsgenie plugin'
+site_description: 'View OpsGenie alerts and incidents inside Backstage'
+
+nav:
+  - Home: index.md
+  - Setup: setup.md
+  - 'Creating an Opsgenie API key': creating-api-key.md
+  - 'Display alerts on a component page': alerts-on-component-page.md
+  - 'Incidents analytics page': incidents-analytics.md
+
+plugins:
+  - techdocs-core
