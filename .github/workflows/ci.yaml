@@ -1,5 +1,7 @@
 name: CI
-on: [pull_request]
+on:
+  push:
+    branches: [main]
 
 jobs:
   lint:
@@ -12,7 +14,7 @@ jobs:
       - name: Use Node.js 14.x
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '18'
           cache: 'yarn'
 
       - run: yarn install
@@ -30,7 +32,7 @@ jobs:
       - name: Use Node.js 14.x
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '1418'
           cache: 'yarn'
 
       - run: yarn install
