@@ -26,10 +26,12 @@ jobs:
       - name: Build
         run: yarn build
 
+      - run: ci
       - name: Publish to npm
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        run: npm publish --access public
+
 
 #      - name: Publish if version has been updated
 #        uses: pascalgn/npm-publish-action@1.3.9
