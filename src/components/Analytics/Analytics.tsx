@@ -44,7 +44,7 @@ export const Analytics = () => {
   const context: Context = {
     from: from,
     to: to,
-    incidents: data![0].filter(incident => moment(incident.impactStartDate).isAfter(from)),
+    Alerts: data![0].filter(incident => moment(Alert.impactStartDate).isAfter(from)),
     teams: data![1],
   };
 
