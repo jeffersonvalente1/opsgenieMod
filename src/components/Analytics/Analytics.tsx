@@ -27,7 +27,7 @@ export const Analytics = () => {
 
   const { value: data, loading, error } = useAsync(async () => {
     return Promise.all([
-      opsgenieApi.getIncidents({
+      opsgenieApi.getAlerts({
         limit: 100,
         query: `createdAt < ${to.valueOf()} AND createdAt > ${from.valueOf()}`
       }),
