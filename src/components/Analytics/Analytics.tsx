@@ -69,35 +69,35 @@ export const Alerts = () => {
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <WeeklyIncidents context={context} />
+        <WeeklyAlerts context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <WeeklyIncidentsSeverity context={context} />
+        <WeeklyAlertsSeverity context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <WeeklyIncidentsResponders context={context} />
+        <WeeklyAlertsResponders context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <MonthlyIncidentsResponders context={context} />
+        <MonthlyAlertsResponders context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <QuarterlyIncidentsResponders context={context} />
+        <QuarterlyAlertsResponders context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <DailyIncidentsResponders context={context} />
+        <DailyAlertsResponders context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <HourlyIncidents context={context} />
+        <HourlyAlerts context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <DailyIncidents context={context} />
+        <DailyAlerts context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
