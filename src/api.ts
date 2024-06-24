@@ -134,7 +134,8 @@ export class OpsgenieApi implements Opsgenie {
     if (!resp.ok) throw new Error(`Request failed with ${resp.status}: ${resp.statusText}`);
   }
 
-  async getAlerts(opts?: AlertsFetchOpts): Promise<Alert[]> {
+  //async getAlerts(opts?: AlertsFetchOpts): Promise<Alert[]> {
+  async getAlerts(): Promise<Alert[]> {
     //const limit = opts?.limit || 100;
     //const sort = opts?.sort || 'createdAt';
     //const order = opts?.order || 'desc';
