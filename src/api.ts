@@ -8,8 +8,6 @@ export const opsgenieApiRef = createApiRef<Opsgenie>({
 type AlertsFetchOpts = {
   limit?: number
   query?: string
-  sort?: string;
-  order?: string;
 }
 
 //type IncidentsFetchOpts = {
@@ -43,11 +41,6 @@ export interface Opsgenie {
 
 interface AlertsResponse {
   data: Alert[];
-  paging: {
-    first: string;
-    next?: string;
-    last: string;
-  };
 }
 
 //interface IncidentsResponse {
@@ -136,21 +129,10 @@ export class OpsgenieApi implements Opsgenie {
 
   async getAlerts(opts?: AlertsFetchOpts): Promise<Alert[]> {
     const limit = opts?.limit || 50;
-    const sort = opts?.sort || 'createdAt';
-    const order = opts?.order || 'desc';
     const query = opts?.query ? `&query=${opts?.query}` : '';
-    
-    let response = await this.fetch<AlertsResponse>(`/v2/alerts?limit=${limit}&sort=${sort}&order=${order}${query}`);
-    let alerts = response.data;
+    const response = await this.fetch<AlertsResponse>(`/v2/alerts?limit=${limit}${query}`);
 
-    while (response.paging.next) {
-      const parsedUrl = new URL(response.paging.next);
-      response = await this.fetch(parsedUrl.pathname + parsedUrl.search);
-
-      alerts = alerts.concat(response.data);
-    }
-
-    return alerts;
+    return response.data;
   }
 
 //  async getIncidents(opts?: IncidentsFetchOpts): Promise<Incident[]> {
@@ -226,9 +208,9 @@ export class OpsgenieApi implements Opsgenie {
     return `${this.domain}/alert/detail/${alert.id}/details`;
   }
 
-//  getIncidentDetailsURL(incident: Incident): string {
-//    return `${this.domain}/incident/detail/${incident.id}`;
-//  }
+  //getIncidentDetailsURL(incident: Incident): string {
+  //  return `${this.domain}/incident/detail/${incident.id}`;
+  //}
 
   getUserDetailsURL(userId: string): string {
     return `${this.domain}/settings/users/${userId}/detail`;
