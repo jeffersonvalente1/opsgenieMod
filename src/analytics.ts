@@ -1,6 +1,6 @@
 import { createApiRef } from '@backstage/core-plugin-api';
 import moment from 'moment';
-import { Incident, Team } from './types';
+import { Alert, Incident, Team } from './types';
 
 const UNKNOWN_TEAM_NAME = "Unknown";
 
@@ -21,12 +21,12 @@ const teamName = (teams: Team[], teamId: string): string => {
   return UNKNOWN_TEAM_NAME;
 };
 
-export const respondingTeam = (teams: Team[], incident: Incident): string => {
-  if (incident.extraProperties.responders) {
-    return incident.extraProperties.responders;
+export const respondingTeam = (teams: Team[], alert: Alert): string => {
+  if (alert.extraProperties.responders) {
+    return alert.extraProperties.responders;
   }
 
-  const teamResponders = incident.responders.filter((responderRef) => responderRef.type === "team");
+  const teamResponders = alert.responders.filter((responderRef) => responderRef.type === "team");
 
   if (teamResponders.length === 0) {
     return UNKNOWN_TEAM_NAME;
@@ -88,7 +88,7 @@ export interface IncidentsByResponders {
 export interface Context {
   from: moment.Moment;
   to: moment.Moment;
-  incidents: Incident[];
+  alerts: Alert[];
   teams: Team[];
 }
 
