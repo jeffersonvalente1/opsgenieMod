@@ -139,7 +139,7 @@ export class OpsgenieApi implements Opsgenie {
     const sort = opts?.sort || 'createdAt';
     const order = opts?.order || 'desc';
     const query = opts?.query ? `&query=${opts?.query}` : '';
-    let response = await this.fetch<AlertsResponse>(`/v2/alerts?limit=${limit}&sort=${sort}&offset=500&order=${order}${query}`);
+    let response = await this.fetch<AlertsResponse>(`/v2/alerts?limit=100&sort=createdAt&offset=100&order=desc`);
     let alerts = response.data
 
     while (response.paging.next) {
@@ -151,6 +151,8 @@ export class OpsgenieApi implements Opsgenie {
     return alerts;
   }
 
+
+  
 //  async getIncidents(opts?: IncidentsFetchOpts): Promise<Incident[]> {
 //    const limit = opts?.limit || 50;
 //    const sort = opts?.sort || 'createdAt';
