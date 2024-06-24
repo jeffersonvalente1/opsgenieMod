@@ -13,7 +13,7 @@ const Graph = ({ context }: { context: Context }) => {
   const dataPoints = analyticsApi.alertsByDay(context);
 
   return (
-    <div id="daily-incidents" style={{ width: '100%', height: 300, paddingTop: '1.2rem', paddingRight: '1.2rem' }}>
+    <div id="daily-alerts" style={{ width: '100%', height: 300, paddingTop: '1.2rem', paddingRight: '1.2rem' }}>
       <ResponsiveContainer>
         <ScatterChart data={dataPoints}>
           <CartesianGrid strokeDasharray="3 3" />

@@ -1,6 +1,6 @@
 import { createApiRef } from '@backstage/core-plugin-api';
 import moment from 'moment';
-import { Alert, Incident, Team } from './types';
+import { Alert, Team } from './types';
 
 const UNKNOWN_TEAM_NAME = "Unknown";
 
