@@ -13,6 +13,7 @@ export interface Alert {
   extraProperties: Record<string, string>;
   responders: ResponderRef[];
   impactEndDate: string;
+  impactStartDate: string;
 }
 
 export interface ResponderRef {
