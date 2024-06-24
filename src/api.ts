@@ -8,6 +8,8 @@ export const opsgenieApiRef = createApiRef<Opsgenie>({
 type AlertsFetchOpts = {
   limit?: number
   query?: string
+  sort?: string;
+  order?: string;
 }
 
 //type IncidentsFetchOpts = {
