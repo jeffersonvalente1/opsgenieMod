@@ -18,7 +18,7 @@ import { Context, DEFAULT_BUSINESS_HOURS_END, DEFAULT_BUSINESS_HOURS_START } fro
 import { InfoPanel } from '../InfoPanel';
 import { WeeklyImpactResponders } from './WeeklyImpactResponder';
 
-export const Alerts = () => {
+export const Analytics = () => {
   const configApi = useApi(configApiRef);
   const opsgenieApi = useApi(opsgenieApiRef);
 
