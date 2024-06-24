@@ -135,10 +135,10 @@ export class OpsgenieApi implements Opsgenie {
   }
 
   async getAlerts(opts?: AlertsFetchOpts): Promise<Alert[]> {
-    const limit = opts?.limit || 100;
-    const sort = opts?.sort || 'createdAt';
-    const order = opts?.order || 'desc';
-    const query = opts?.query ? `&query=${opts?.query}` : '';
+    //const limit = opts?.limit || 100;
+    //const sort = opts?.sort || 'createdAt';
+    //const order = opts?.order || 'desc';
+    //const query = opts?.query ? `&query=${opts?.query}` : '';
     let response = await this.fetch<AlertsResponse>(`/v2/alerts?limit=100&sort=createdAt&offset=100&order=desc`);
     let alerts = response.data
 
