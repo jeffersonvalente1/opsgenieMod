@@ -10,6 +10,9 @@ export interface Alert {
   priority: string; // TODO: enum
   createdAt: string;
   updatedAt: string;
+  extraProperties: Record<string, string>;
+  responders: ResponderRef[];
+  impactEndDate: string;
 }
 
 export interface ResponderRef {
