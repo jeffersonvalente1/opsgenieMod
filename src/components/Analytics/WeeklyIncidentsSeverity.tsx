@@ -10,10 +10,10 @@ import { FilterZeroTooltip } from './FilterZeroTooltip';
 
 const Graph = ({ context }: { context: Context }) => {
   const analyticsApi = useApi(analyticsApiRef);
-  const dataPoints = analyticsApi.incidentsByWeekAndSeverity(context);
+  const dataPoints = analyticsApi.alertsByWeekAndSeverity(context);
 
   return (
-    <div id="weekly-incidents-severity" style={{ width: '100%', height: 300, paddingTop: '1.2rem', paddingRight: '1.2rem' }}>
+    <div id="weekly-alerts-severity" style={{ width: '100%', height: 300, paddingTop: '1.2rem', paddingRight: '1.2rem' }}>
       <ResponsiveContainer>
         <ComposedChart data={dataPoints}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -32,9 +32,9 @@ const Graph = ({ context }: { context: Context }) => {
   );
 };
 
-export const WeeklyIncidentsSeverity = ({ context }: { context: Context }) => {
+export const WeeklyAlertsSeverity = ({ context }: { context: Context }) => {
   return (
-    <InfoCard title="Incidents by week and severity" action={<SaveAction targetRef="weekly-incidents-severity" />}>
+    <InfoCard title="Alerts by week and severity" action={<SaveAction targetRef="weekly-alerts-severity" />}>
       <Graph context={context} />
     </InfoCard>
   );

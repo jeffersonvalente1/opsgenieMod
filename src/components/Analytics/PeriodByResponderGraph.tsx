@@ -2,11 +2,11 @@ import React from 'react';
 import {
   ComposedChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend, Line
 } from 'recharts';
-import { IncidentsByResponders } from '../../analytics';
+import { AlertsByResponders } from '../../analytics';
 import { FilterZeroTooltip } from './FilterZeroTooltip';
 import { colorForString } from './utils';
 
-export const PeriodByResponderGraph = ({ data }: { data: IncidentsByResponders }) => {
+export const PeriodByResponderGraph = ({ data }: { data: AlertsByResponders }) => {
   return (
     <ResponsiveContainer>
       <ComposedChart data={data.dataPoints}>

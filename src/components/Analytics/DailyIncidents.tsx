@@ -10,7 +10,7 @@ import { FilterZeroTooltip } from './FilterZeroTooltip';
 
 const Graph = ({ context }: { context: Context }) => {
   const analyticsApi = useApi(analyticsApiRef);
-  const dataPoints = analyticsApi.incidentsByDay(context);
+  const dataPoints = analyticsApi.alertsByDay(context);
 
   return (
     <div id="daily-incidents" style={{ width: '100%', height: 300, paddingTop: '1.2rem', paddingRight: '1.2rem' }}>
@@ -27,9 +27,9 @@ const Graph = ({ context }: { context: Context }) => {
   );
 };
 
-export const DailyIncidents = ({ context }: { context: Context }) => {
+export const DailyAlerts = ({ context }: { context: Context }) => {
   return (
-    <InfoCard title="Incidents by day" action={<SaveAction targetRef="daily-incidents" />}>
+    <InfoCard title="Alerts by day" action={<SaveAction targetRef="daily-alerts" />}>
       <Graph context={context} />
     </InfoCard>
   );
