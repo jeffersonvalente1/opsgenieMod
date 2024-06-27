@@ -22,7 +22,7 @@ export const Analyticsalerts = () => {
   const configApi = useApi(configApiRef);
   const opsgenieApi = useApi(opsgenieApiRef);
 
-  const from = moment().subtract(1, 'year').startOf('quarter');
+  const from = moment().subtract(1, 'month').startOf('week');
   const to = moment();
 
   const { value: data, loading, error } = useAsync(async () => {
@@ -46,7 +46,8 @@ export const Analyticsalerts = () => {
     to: to,
     //alerts: data![0] as Alertanalitycs[],
     alerts: data![0].filter(alert => moment(alert.createdAt).isAfter(from)),
-    teams: data![1],
+    //teams: data![1],
+    teams: data![1].filter(team => team.name === "athena-sus"),
   };
 
   const businessHours = {
@@ -58,7 +59,7 @@ export const Analyticsalerts = () => {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <InfoPanel
-          title="This graphs cover one year worth of alerts, from the current quarter to the same quarter last year."
+          title="This graphs cover one month worth of alerts, from the current week to the same week last month."
           message={
             <ul>
               <li>alerts from {from.format('LL')} to now are used</li>
