@@ -50,8 +50,8 @@ export const Analyticsalerts = () => {
   };
 
   const businessHours = {
-    start: configApi.getOptionalNumber('opsgenie.analyticsalerts.businessHours.start') || DEFAULT_BUSINESS_HOURS_START,
-    end: configApi.getOptionalNumber('opsgenie.analyticsalerts.businessHours.end') || DEFAULT_BUSINESS_HOURS_END,
+    start: configApi.getOptionalNumber('opsgenie.analytics.businessHours.start') || DEFAULT_BUSINESS_HOURS_START,
+    end: configApi.getOptionalNumber('opsgenie.analytics.businessHours.end') || DEFAULT_BUSINESS_HOURS_END,
   };
 
   return (
