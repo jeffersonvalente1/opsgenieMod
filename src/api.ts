@@ -1,4 +1,4 @@
-import { Alert, Incident, OnCallParticipantRef, Schedule, Team } from './types';
+import { Alert, Incident, Alertanalitycs,OnCallParticipantRef, Schedule, Team } from './types';
 import { createApiRef, DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 
 export const opsgenieApiRef = createApiRef<Opsgenie>({
@@ -17,9 +17,17 @@ type IncidentsFetchOpts = {
   order?: string;
 }
 
+type AlertanalitycsFetchOpts = {
+  limit?: number
+  query?: string;
+  sort?: string;
+  order?: string;
+}
+
 export interface Opsgenie {
   getAlerts(opts?: AlertsFetchOpts): Promise<Alert[]>;
   getIncidents(opts?: IncidentsFetchOpts): Promise<Incident[]>;
+  getAlertanalitycs(opts?: AlertanalitycsFetchOpts): Promise<Alertanalitycs[]>;
 
   getAlertDetailsURL(alert: Alert): string;
 
@@ -27,6 +35,8 @@ export interface Opsgenie {
   closeAlert(alert: Alert): Promise<void>;
 
   getIncidentDetailsURL(incident: Incident): string;
+  
+  getAlertanalitycsURL(alert: Alertanalitycs): string;
 
   getSchedules(): Promise<Schedule[]>;
   getSchedulesForTeam(name: string): Promise<Schedule[]>;
@@ -45,6 +55,15 @@ interface AlertsResponse {
 
 interface IncidentsResponse {
   data: Incident[];
+  paging: {
+    first: string;
+    next?: string;
+    last: string;
+  };
+}
+
+interface AlertanalitycsResponse {
+  data: Alertanalitycs[];
   paging: {
     first: string;
     next?: string;
@@ -154,6 +173,24 @@ export class OpsgenieApi implements Opsgenie {
     return incidents;
   }
 
+  async getAlertanalitycs(opts?: AlertanalitycsFetchOpts): Promise<Alertanalitycs[]> {
+    const limit = opts?.limit || 50;
+    const sort = opts?.sort || 'createdAt';
+    const order = opts?.order || 'desc';
+    const query = opts?.query ? `&query=${opts?.query}` : '';
+
+    let response = await this.fetch<AlertanalitycsResponse>(`/v1/alerts?limit=${limit}&sort=${sort}&order=${order}${query}`);
+    let Alertanalitycs = response.data;
+
+    while (response.paging.next) {
+      const parsedUrl = new URL(response.paging.next);
+      response = await this.fetch(parsedUrl.pathname + parsedUrl.search);
+
+      Alertanalitycs = Alertanalitycs.concat(response.data);
+    }
+
+    return Alertanalitycs;
+  }
   async acknowledgeAlert(alert: Alert): Promise<void> {
     if (this.isReadOnly()) {
       throw new Error('You can\'t acknowledge an alert in read-only mode.');
@@ -205,6 +242,10 @@ export class OpsgenieApi implements Opsgenie {
   }
 
   getAlertDetailsURL(alert: Alert): string {
+    return `${this.domain}/alert/detail/${alert.id}/details`;
+  }
+
+  getAlertanalitycsURL(alert: Alertanalitycs): string {
     return `${this.domain}/alert/detail/${alert.id}/details`;
   }
 
