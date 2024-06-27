@@ -22,9 +22,9 @@ const teamName = (teams: Team[], teamId: string): string => {
 };
 
 export const respondingTeam = (teams: Team[], alertanalitycs: Alertanalitycs): string => {
-  if (alertanalitycs.extraProperties.responders) {
-    return alertanalitycs.extraProperties.responders;
-  }
+  //if (alertanalitycs.extraProperties.responders) {
+  //  return alertanalitycs.extraProperties.responders;
+  //}
 
   const teamResponders = alertanalitycs.responders.filter((responderRef) => responderRef.type === "team");
 
