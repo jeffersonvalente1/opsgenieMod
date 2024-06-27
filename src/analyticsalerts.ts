@@ -28,9 +28,9 @@ export const respondingTeam = (teams: Team[], alertanalitycs: Alertanalitycs): s
 
   const teamResponders = alertanalitycs.responders.filter((responderRef) => responderRef.type === "team");
 
-  if (teamResponders.length === 0) {
-    return UNKNOWN_TEAM_NAME;
-  }
+  //if (teamResponders.length === 0) {
+  //  return UNKNOWN_TEAM_NAME;
+  //}
 
   return teamName(teams, teamResponders[0].id);
 };
