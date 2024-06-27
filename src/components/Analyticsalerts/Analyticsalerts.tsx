@@ -17,6 +17,7 @@ import { Alert } from '@material-ui/lab';
 import { Context, DEFAULT_BUSINESS_HOURS_END, DEFAULT_BUSINESS_HOURS_START } from '../../analyticsalerts';
 import { InfoPanel } from '../InfoPanel';
 import { WeeklyImpactResponders } from './WeeklyImpactResponder';
+import { Alertanalitycs } from '../../types';
 
 export const Analyticsalerts = () => {
   const configApi = useApi(configApiRef);
@@ -44,7 +45,8 @@ export const Analyticsalerts = () => {
   const context: Context = {
     from: from,
     to: to,
-    alerts: data![0].filter(alert => moment(alert.impactStartDate).isAfter(from)),
+    alerts: data![0] as Alertanalitycs[],
+    //alerts: data![0].filter(alert => moment(alert.impactStartDate).isAfter(from)),
     teams: data![1],
   };
 
