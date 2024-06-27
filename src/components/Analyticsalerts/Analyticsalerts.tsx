@@ -28,7 +28,7 @@ export const Analyticsalerts = () => {
 
   const { value: data, loading, error } = useAsync(async () => {
     return Promise.all([
-      opsgenieApi.getAlerts({
+      opsgenieApi.getAlertanalitycs({
         limit: 100,
         query: `createdAt < ${to.valueOf()} AND createdAt > ${from.valueOf()}`
       }),
@@ -45,8 +45,8 @@ export const Analyticsalerts = () => {
   const context: Context = {
     from: from,
     to: to,
-    alerts: data![0] as Alertanalitycs[],
-    //alerts: data![0].filter(alert => moment(alert.impactStartDate).isAfter(from)),
+    //alerts: data![0] as Alertanalitycs[],
+    alerts: data![0].filter(alert => moment(alert.impactStartDate).isAfter(from)),
     teams: data![1],
   };
 
