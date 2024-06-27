@@ -17,7 +17,6 @@ import { Alert } from '@material-ui/lab';
 import { Context, DEFAULT_BUSINESS_HOURS_END, DEFAULT_BUSINESS_HOURS_START } from '../../analyticsalerts';
 import { InfoPanel } from '../InfoPanel';
 import { WeeklyImpactResponders } from './WeeklyImpactResponder';
-import { Alertanalitycs } from '../../types';
 
 export const Analyticsalerts = () => {
   const configApi = useApi(configApiRef);
