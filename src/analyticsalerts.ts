@@ -4,11 +4,11 @@ import { Alertanalitycs, Team } from './types';
 
 const UNKNOWN_TEAM_NAME = "Unknown";
 
-export const DEFAULT_BUSINESS_HOURS_START = 9;
-export const DEFAULT_BUSINESS_HOURS_END = 18;
+export const DEFAULT_ALERTS_BUSINESS_HOURS_START = 9;
+export const DEFAULT_ALERTS_BUSINESS_HOURS_END = 18;
 
-export const analyticsApiRef = createApiRef<AnalitycsalertsApi>({
-  id: 'plugin.opsgenie.analytics',
+export const alertanalyticsApiRef = createApiRef<AnalitycsalertsApi>({
+  id: 'plugin.opsgenie.analyticsalerts',
 });
 
 const teamName = (teams: Team[], teamId: string): string => {

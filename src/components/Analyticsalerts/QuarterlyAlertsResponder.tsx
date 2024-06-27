@@ -2,12 +2,12 @@ import React from 'react';
 import { InfoCard } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
 import { SaveAction } from './SaveAction';
-import { analyticsApiRef, Context } from '../../analyticsalerts';
+import { alertanalyticsApiRef, Context } from '../../analyticsalerts';
 import { PeriodByResponderGraph } from './PeriodByResponderGraph';
 
 export const QuarterlyAlertsResponders = ({ context }: { context: Context }) => {
   const graphId = "quarterly-alerts-responders";
-  const analyticsApi = useApi(analyticsApiRef);
+  const analyticsApi = useApi(alertanalyticsApiRef);
   const data = analyticsApi.alertsByQuarterAndResponder(context);
 
   return (

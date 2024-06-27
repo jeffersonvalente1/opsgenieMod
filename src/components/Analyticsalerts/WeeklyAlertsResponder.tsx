@@ -1,13 +1,13 @@
 import React from 'react';
 import { InfoCard } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
-import { analyticsApiRef, Context } from '../../analyticsalerts';
+import { alertanalyticsApiRef, Context } from '../../analyticsalerts';
 import { SaveAction } from './SaveAction';
 import { PeriodByResponderGraph } from './PeriodByResponderGraph';
 
 export const WeeklyAlertsResponders = ({ context }: { context: Context }) => {
   const graphId = "weekly-alerts-responders";
-  const analyticsApi = useApi(analyticsApiRef);
+  const analyticsApi = useApi(alertanalyticsApiRef);
   const data = analyticsApi.alertsByWeekAndResponder(context);
 
   return (

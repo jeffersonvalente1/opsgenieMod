@@ -14,7 +14,7 @@ import { opsgenieApiRef } from '../../api';
 import { useAsync } from 'react-use';
 import { Progress } from '@backstage/core-components';
 import { Alert } from '@material-ui/lab';
-import { Context, DEFAULT_BUSINESS_HOURS_END, DEFAULT_BUSINESS_HOURS_START } from '../../analyticsalerts';
+import { Context, DEFAULT_ALERTS_BUSINESS_HOURS_END, DEFAULT_ALERTS_BUSINESS_HOURS_START } from '../../analyticsalerts';
 import { InfoPanel } from '../InfoPanel';
 import { WeeklyImpactResponders } from './WeeklyImpactResponder';
 
@@ -50,8 +50,8 @@ export const Analyticsalerts = () => {
   };
 
   const businessHours = {
-    start: configApi.getOptionalNumber('opsgenie.analytics.businessHours.start') || DEFAULT_BUSINESS_HOURS_START,
-    end: configApi.getOptionalNumber('opsgenie.analytics.businessHours.end') || DEFAULT_BUSINESS_HOURS_END,
+    start: configApi.getOptionalNumber('opsgenie.analytics.businessHours.start') || DEFAULT_ALERTS_BUSINESS_HOURS_START,
+    end: configApi.getOptionalNumber('opsgenie.analytics.businessHours.end') || DEFAULT_ALERTS_BUSINESS_HOURS_END,
   };
 
   return (

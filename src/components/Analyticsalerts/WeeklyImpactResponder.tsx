@@ -1,7 +1,7 @@
 import React from 'react';
 import { InfoCard } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
-import { analyticsApiRef, Context } from '../../analyticsalerts';
+import { alertanalyticsApiRef, Context } from '../../analyticsalerts';
 import { SaveAction } from './SaveAction';
 import { colorForString } from './utils';
 import { Bar, CartesianGrid, ComposedChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -54,7 +54,7 @@ const DurationTooltip = (props: any) => {
 
 export const WeeklyImpactResponders = ({ context }: { context: Context }) => {
   const graphId = "weekly-impact-responders";
-  const analyticsApi = useApi(analyticsApiRef);
+  const analyticsApi = useApi(alertanalyticsApiRef);
   const data = analyticsApi.impactByWeekAndResponder(context);
 
   return (

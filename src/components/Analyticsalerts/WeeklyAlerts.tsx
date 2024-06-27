@@ -4,12 +4,12 @@ import {
 } from 'recharts';
 import { InfoCard } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
-import { analyticsApiRef, Context } from '../../analyticsalerts';
+import { alertanalyticsApiRef, Context } from '../../analyticsalerts';
 import { SaveAction } from './SaveAction';
 import { FilterZeroTooltip } from './FilterZeroTooltip';
 
 const Graph = ({ context }: { context: Context }) => {
-  const analyticsApi = useApi(analyticsApiRef);
+  const analyticsApi = useApi(alertanalyticsApiRef);
   const dataPoints = analyticsApi.alertsByWeekAndHours(context);
 
   return (

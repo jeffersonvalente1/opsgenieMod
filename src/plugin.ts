@@ -8,6 +8,7 @@ import {
   identityApiRef,
 } from '@backstage/core-plugin-api';
 import { AnalitycsApi, analyticsApiRef, DEFAULT_BUSINESS_HOURS_END, DEFAULT_BUSINESS_HOURS_START } from './analytics';
+import { AnalitycsalertsApi, alertanalyticsApiRef, DEFAULT_ALERTS_BUSINESS_HOURS_END, DEFAULT_ALERTS_BUSINESS_HOURS_START } from './analyticsalerts';
 
 export const opsgenieRouteRef = createRouteRef({
   id: 'opsgenie',
@@ -38,6 +39,18 @@ export const opsGeniePlugin = createPlugin({
           businessHours: {
             start: configApi.getOptionalNumber('opsgenie.analytics.businessHours.start') || DEFAULT_BUSINESS_HOURS_START,
             end: configApi.getOptionalNumber('opsgenie.analytics.businessHours.end') || DEFAULT_BUSINESS_HOURS_END,
+          },
+        });
+      },
+    }),
+    createApiFactory({
+      api: alertanalyticsApiRef,
+      deps: { configApi: configApiRef },
+      factory: ({ configApi }) => {
+        return new AnalitycsalertsApi({
+          businessHours: {
+            start: configApi.getOptionalNumber('opsgenie.analytics.businessHours.start') || DEFAULT_ALERTS_BUSINESS_HOURS_START,
+            end: configApi.getOptionalNumber('opsgenie.analytics.businessHours.end') || DEFAULT_ALERTS_BUSINESS_HOURS_END,
           },
         });
       },
