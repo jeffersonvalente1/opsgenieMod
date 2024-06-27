@@ -179,7 +179,7 @@ export class OpsgenieApi implements Opsgenie {
     const order = opts?.order || 'desc';
     const query = opts?.query ? `&query=${opts?.query}` : '';
 
-    let response = await this.fetch<AlertanalitycsResponse>(`/v1/alerts?limit=${limit}&sort=${sort}&order=${order}${query}`);
+    let response = await this.fetch<AlertanalitycsResponse>(`/v2/alerts?limit=${limit}&sort=${sort}&order=${order}${query}`);
     let Alertanalitycs = response.data;
 
     while (response.paging.next) {
