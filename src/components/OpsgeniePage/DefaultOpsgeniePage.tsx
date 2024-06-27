@@ -22,8 +22,8 @@ export const DefaultOpsgeniePage = ({ onCallListCardsCount }: OpsgeniePageProps)
       <Layout.Route path="analytics" title="Analytics">
         <Analytics />
       </Layout.Route>
-      <Layout.Route path="analyticsalerts" title="Analytics Alerts">
-        <Analytics />
+      <Layout.Route path="Analyticsalerts" title="Analyticsalerts">
+        <Analyticsalerts/>
       </Layout.Route>
     </Layout>
   );
