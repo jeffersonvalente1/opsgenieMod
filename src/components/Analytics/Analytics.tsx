@@ -1,13 +1,13 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import { WeeklyAlerts } from './WeeklyIncidents';
-import { WeeklyAlertsSeverity } from './WeeklyIncidentsSeverity';
-import { WeeklyAlertsResponders } from './WeeklyIncidentsResponder';
-import { QuarterlyAlertsResponders } from './QuarterlyIncidentsResponder';
-import { HourlyAlerts } from './HourlyIncidents';
-import { MonthlyAlertsResponders } from './MonthlyIncidentsResponder';
-import { DailyAlertsResponders } from './DailyIncidentsResponder';
-import { DailyAlerts } from './DailyIncidents';
+import { WeeklyIncidents } from './WeeklyIncidents';
+import { WeeklyIncidentsSeverity } from './WeeklyIncidentsSeverity';
+import { WeeklyIncidentsResponders } from './WeeklyIncidentsResponder';
+import { QuarterlyIncidentsResponders } from './QuarterlyIncidentsResponder';
+import { HourlyIncidents } from './HourlyIncidents';
+import { MonthlyIncidentsResponders } from './MonthlyIncidentsResponder';
+import { DailyIncidentsResponders } from './DailyIncidentsResponder';
+import { DailyIncidents } from './DailyIncidents';
 import { configApiRef, useApi } from '@backstage/core-plugin-api';
 import moment from 'moment';
 import { opsgenieApiRef } from '../../api';
@@ -27,7 +27,7 @@ export const Analytics = () => {
 
   const { value: data, loading, error } = useAsync(async () => {
     return Promise.all([
-      opsgenieApi.getAlerts({
+      opsgenieApi.getIncidents({
         limit: 100,
         query: `createdAt < ${to.valueOf()} AND createdAt > ${from.valueOf()}`
       }),
@@ -44,7 +44,7 @@ export const Analytics = () => {
   const context: Context = {
     from: from,
     to: to,
-    alerts: data![0].filter(alert => moment(alert.impactStartDate).isAfter(from)),
+    incidents: data![0].filter(incident => moment(incident.impactStartDate).isAfter(from)),
     teams: data![1],
   };
 
@@ -69,35 +69,35 @@ export const Analytics = () => {
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <WeeklyAlerts context={context} />
+        <WeeklyIncidents context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <WeeklyAlertsSeverity context={context} />
+        <WeeklyIncidentsSeverity context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <WeeklyAlertsResponders context={context} />
+        <WeeklyIncidentsResponders context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <MonthlyAlertsResponders context={context} />
+        <MonthlyIncidentsResponders context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <QuarterlyAlertsResponders context={context} />
+        <QuarterlyIncidentsResponders context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <DailyAlertsResponders context={context} />
+        <DailyIncidentsResponders context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <HourlyAlerts context={context} />
+        <HourlyIncidents context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>
-        <DailyAlerts context={context} />
+        <DailyIncidents context={context} />
       </Grid>
 
       <Grid item md={6} xs={12}>

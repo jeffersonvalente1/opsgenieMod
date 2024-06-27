@@ -1,4 +1,4 @@
-import { Alert, OnCallParticipantRef, Schedule, Team } from './types';
+import { Alert, Incident, OnCallParticipantRef, Schedule, Team } from './types';
 import { createApiRef, DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 
 export const opsgenieApiRef = createApiRef<Opsgenie>({
@@ -8,27 +8,25 @@ export const opsgenieApiRef = createApiRef<Opsgenie>({
 type AlertsFetchOpts = {
   limit?: number
   query?: string
+}
+
+type IncidentsFetchOpts = {
+  limit?: number
+  query?: string;
   sort?: string;
   order?: string;
 }
 
-//type IncidentsFetchOpts = {
-//  limit?: number
-//  query?: string;
-//  sort?: string;
-//  order?: string;
-//}
-
 export interface Opsgenie {
   getAlerts(opts?: AlertsFetchOpts): Promise<Alert[]>;
-//  getIncidents(opts?: IncidentsFetchOpts): Promise<Incident[]>;
+  getIncidents(opts?: IncidentsFetchOpts): Promise<Incident[]>;
 
   getAlertDetailsURL(alert: Alert): string;
 
   acknowledgeAlert(alert: Alert): Promise<void>;
   closeAlert(alert: Alert): Promise<void>;
 
-//  getIncidentDetailsURL(incident: Incident): string;
+  getIncidentDetailsURL(incident: Incident): string;
 
   getSchedules(): Promise<Schedule[]>;
   getSchedulesForTeam(name: string): Promise<Schedule[]>;
@@ -43,21 +41,16 @@ export interface Opsgenie {
 
 interface AlertsResponse {
   data: Alert[];
+}
+
+interface IncidentsResponse {
+  data: Incident[];
   paging: {
     first: string;
     next?: string;
     last: string;
   };
 }
-
-//interface IncidentsResponse {
-//  data: Incident[];
-//  paging: {
-//    first: string;
-//    next?: string;
-//    last: string;
-//  };
-//}
 
 interface SchedulesResponse {
   data: Schedule[];
@@ -134,44 +127,32 @@ export class OpsgenieApi implements Opsgenie {
     if (!resp.ok) throw new Error(`Request failed with ${resp.status}: ${resp.statusText}`);
   }
 
-  //async getAlerts(opts?: AlertsFetchOpts): Promise<Alert[]> {
-  async getAlerts(): Promise<Alert[]> {
-    //const limit = opts?.limit || 100;
-    //const sort = opts?.sort || 'createdAt';
-    //const order = opts?.order || 'desc';
-    //const query = opts?.query ? `&query=${opts?.query}` : '';
-    let response = await this.fetch<AlertsResponse>(`/v2/alerts?limit=100&sort=createdAt&offset=100&order=desc`);
-    let alerts = response.data
+  async getAlerts(opts?: AlertsFetchOpts): Promise<Alert[]> {
+    const limit = opts?.limit || 50;
+    const query = opts?.query ? `&query=${opts?.query}` : '';
+    const response = await this.fetch<AlertsResponse>(`/v2/alerts?limit=${limit}${query}`);
+
+    return response.data;
+  }
+
+  async getIncidents(opts?: IncidentsFetchOpts): Promise<Incident[]> {
+    const limit = opts?.limit || 50;
+    const sort = opts?.sort || 'createdAt';
+    const order = opts?.order || 'desc';
+    const query = opts?.query ? `&query=${opts?.query}` : '';
+
+    let response = await this.fetch<IncidentsResponse>(`/v1/incidents?limit=${limit}&sort=${sort}&order=${order}${query}`);
+    let incidents = response.data;
 
     while (response.paging.next) {
       const parsedUrl = new URL(response.paging.next);
       response = await this.fetch(parsedUrl.pathname + parsedUrl.search);
 
-      alerts = alerts.concat(response.data);
+      incidents = incidents.concat(response.data);
     }
-    return alerts;
+
+    return incidents;
   }
-
-
-  
-//  async getIncidents(opts?: IncidentsFetchOpts): Promise<Incident[]> {
-//    const limit = opts?.limit || 50;
-//    const sort = opts?.sort || 'createdAt';
-//    const order = opts?.order || 'desc';
-//    const query = opts?.query ? `&query=${opts?.query}` : '';
-//
-//    let response = await this.fetch<IncidentsResponse>(`/v1/incidents?limit=${limit}&sort=${sort}&order=${order}${query}`);
-//    let incidents = response.data;
-//
-//    while (response.paging.next) {
-//      const parsedUrl = new URL(response.paging.next);
-//      response = await this.fetch(parsedUrl.pathname + parsedUrl.search);
-//
-//      incidents = incidents.concat(response.data);
-//    }
-//
-//    return incidents;
-//  }
 
   async acknowledgeAlert(alert: Alert): Promise<void> {
     if (this.isReadOnly()) {
@@ -227,9 +208,9 @@ export class OpsgenieApi implements Opsgenie {
     return `${this.domain}/alert/detail/${alert.id}/details`;
   }
 
-  //getIncidentDetailsURL(incident: Incident): string {
-  //  return `${this.domain}/incident/detail/${incident.id}`;
-  //}
+  getIncidentDetailsURL(incident: Incident): string {
+    return `${this.domain}/incident/detail/${incident.id}`;
+  }
 
   getUserDetailsURL(userId: string): string {
     return `${this.domain}/settings/users/${userId}/detail`;

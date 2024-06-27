@@ -10,10 +10,10 @@ import { FilterZeroTooltip } from './FilterZeroTooltip';
 
 const Graph = ({ context }: { context: Context }) => {
   const analyticsApi = useApi(analyticsApiRef);
-  const dataPoints = analyticsApi.alertsByHour(context);
+  const dataPoints = analyticsApi.incidentsByHour(context);
 
   return (
-    <div id="hourly-alerts" style={{ width: '100%', height: 300, paddingTop: '1.2rem', paddingRight: '1.2rem' }}>
+    <div id="hourly-incidents" style={{ width: '100%', height: 300, paddingTop: '1.2rem', paddingRight: '1.2rem' }}>
       <ResponsiveContainer>
         <ScatterChart data={dataPoints}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -27,9 +27,9 @@ const Graph = ({ context }: { context: Context }) => {
   );
 };
 
-export const HourlyAlerts = ({ context }: { context: Context }) => {
+export const HourlyIncidents = ({ context }: { context: Context }) => {
   return (
-    <InfoCard title="Alerts by hour" action={<SaveAction targetRef="hourly-Alerts" />}>
+    <InfoCard title="Incidents by hour" action={<SaveAction targetRef="hourly-incidents" />}>
       <Graph context={context} />
     </InfoCard>
   );

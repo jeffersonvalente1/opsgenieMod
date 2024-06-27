@@ -5,13 +5,13 @@ import { analyticsApiRef, Context } from '../../analytics';
 import { SaveAction } from './SaveAction';
 import { PeriodByResponderGraph } from './PeriodByResponderGraph';
 
-export const DailyAlertsResponders = ({ context }: { context: Context }) => {
-  const graphId = "daily-alerts-responders";
+export const DailyIncidentsResponders = ({ context }: { context: Context }) => {
+  const graphId = "daily-incidents-responders";
   const analyticsApi = useApi(analyticsApiRef);
-  const data = analyticsApi.alertsByDayAndResponder(context);
+  const data = analyticsApi.incidentsByDayAndResponder(context);
 
   return (
-    <InfoCard title="Alerts by day and responder" action={<SaveAction targetRef={graphId} />}>
+    <InfoCard title="Incidents by day and responder" action={<SaveAction targetRef={graphId} />}>
       <div id={graphId} style={{ width: '100%', height: 450, paddingTop: '1.2rem', paddingRight: '1.2rem' }}>
         <PeriodByResponderGraph data={data!} />
       </div>

@@ -10,10 +10,6 @@ export interface Alert {
   priority: string; // TODO: enum
   createdAt: string;
   updatedAt: string;
-  extraProperties: Record<string, string>;
-  responders: ResponderRef[];
-  impactEndDate: string;
-  impactStartDate: string;
 }
 
 export interface ResponderRef {
@@ -21,21 +17,21 @@ export interface ResponderRef {
   type: string; // "team", "user"
 }
 
-//export interface Incident {
-//  id: string; // UUID
-//  tinyId: string;
-//  message: string; // "Our servers are in danger"
-//  status: string; // TODO: enum
-//  tags: string[]; // ["Critical", "owner:some-team", "service:business-critical"]
-//  priority: string; // TODO: enum
-//  createdAt: string;
-//  updatedAt: string;
-//  impactStartDate: string;
-//  impactEndDate: string;
-//  responders: ResponderRef[];
-//  extraProperties: Record<string, string>;
-//}
-//
+export interface Incident {
+  id: string; // UUID
+  tinyId: string;
+  message: string; // "Our servers are in danger"
+  status: string; // TODO: enum
+  tags: string[]; // ["Critical", "owner:some-team", "service:business-critical"]
+  priority: string; // TODO: enum
+  createdAt: string;
+  updatedAt: string;
+  impactStartDate: string;
+  impactEndDate: string;
+  responders: ResponderRef[];
+  extraProperties: Record<string, string>;
+}
+
 export interface TeamRef {
   id: string; // UUID
   name: string;
