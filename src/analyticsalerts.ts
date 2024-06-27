@@ -7,7 +7,7 @@ const UNKNOWN_TEAM_NAME = "Unknown";
 export const DEFAULT_BUSINESS_HOURS_START = 9;
 export const DEFAULT_BUSINESS_HOURS_END = 18;
 
-export const analyticsApiRef = createApiRef<Analytics>({
+export const analyticsApiRef = createApiRef<AnalitycsalertsApi>({
   id: 'plugin.opsgenie.analytics',
 });
 
@@ -92,7 +92,7 @@ export interface Context {
   teams: Team[];
 }
 
-export interface Analytics {
+export interface Alertanalitycs {
   alertsByHour(context: Context): HourlyAlerts[];
   alertsByDay(context: Context): DailyAlerts[];
 

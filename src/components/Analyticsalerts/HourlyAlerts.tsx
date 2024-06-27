@@ -4,7 +4,7 @@ import {
 } from 'recharts';
 import { InfoCard } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
-import { analyticsApiRef, Context } from '../../analytics';
+import { analyticsApiRef, Context } from '../../analyticsalerts';
 import { SaveAction } from './SaveAction';
 import { FilterZeroTooltip } from './FilterZeroTooltip';
 
