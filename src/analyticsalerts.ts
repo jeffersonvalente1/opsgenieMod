@@ -92,7 +92,7 @@ export interface Context {
   teams: Team[];
 }
 
-export interface Alertanalitycs {
+export interface AnalyticAlerts {
   alertsByHour(context: Context): HourlyAlerts[];
   alertsByDay(context: Context): DailyAlerts[];
 
@@ -112,7 +112,7 @@ interface BusinessHours {
   end: number;
 }
 
-export class AnalitycsalertsApi implements Analytics {
+export class AnalitycsalertsApi implements AnalyticAlerts {
   private readonly businessHours: BusinessHours;
 
   constructor(opts: { businessHours: BusinessHours }) {
