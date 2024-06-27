@@ -128,7 +128,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
-      const alertDate = moment(alert.impactStartDate);
+      const alertDate = moment(alert.createdAt);
 
       alertsBuckets[alertDate.hour()] += 1;
     });
@@ -154,7 +154,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
-      const alertDate = moment(alert.impactStartDate);
+      const alertDate = moment(alert.createdAt);
 
       alertsBuckets[alertDate.day()] += 1;
     });
@@ -198,7 +198,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
-      const alertDate = moment(alert.impactStartDate);
+      const alertDate = moment(alert.createdAt);
       const week = `w${alertDate.isoWeek()} - ${alertDate.year()}`;
 
       if (alert.priority === 'P1') {
@@ -254,7 +254,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
-      const alertDate = moment(alert.impactStartDate);
+      const alertDate = moment(alert.createdAt);
       const week = `w${alertDate.isoWeek()} - ${alertDate.year()}`;
 
       alertsBuckets[week].total += 1;
@@ -294,7 +294,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
-      const alertDate = moment(alert.impactStartDate);
+      const alertDate = moment(alert.createdAt);
       const day = alertDate.day();
       const responder = respondingTeam(context.teams, alert);
 
@@ -354,7 +354,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
-      const alertDate = moment(alert.impactStartDate);
+      const alertDate = moment(alert.createdAt);
       const month = `${alertDate.month() + 1}/${alertDate.year()}`;
       const responder = respondingTeam(context.teams, alert);
 
@@ -413,7 +413,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
-      const alertDate = moment(alert.impactStartDate);
+      const alertDate = moment(alert.createdAt);
       const week = `w${alertDate.isoWeek()} - ${alertDate.year()}`;
       const responder = respondingTeam(context.teams, alert);
 
@@ -472,7 +472,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
-      const alertDate = moment(alert.impactStartDate);
+      const alertDate = moment(alert.createdAt);
       const quarter = `Q${alertDate.quarter()} - ${alertDate.year()}`;
       const responder = respondingTeam(context.teams, alert);
 
@@ -534,8 +534,8 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
-      const alertDate = moment(alert.impactStartDate);
-      const alertEnd = moment(alert.impactEndDate);
+      const alertDate = moment(alert.createdAt);
+      const alertEnd = moment(alert.updatedAt);
       const week = `w${alertDate.isoWeek()} - ${alertDate.year()}`;
       const responder = respondingTeam(context.teams, alert);
       const impactDuration = alertEnd.diff(alertDate, 'minutes');

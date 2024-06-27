@@ -41,8 +41,6 @@ export interface Alertanalitycs {
   priority: string; // TODO: enum
   createdAt: string;
   updatedAt: string;
-  impactStartDate: string;
-  impactEndDate: string;
   responders: ResponderRef[];
   extraProperties: Record<string, string>;
 }
