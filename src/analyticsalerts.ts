@@ -17,7 +17,6 @@ const teamName = (teams: Team[], teamId: string): string => {
       return team.name;
     }
   }
-
   return UNKNOWN_TEAM_NAME;
 };
 
@@ -28,22 +27,12 @@ export const respondingTeam = (teams: Team[], alertanalitycs: Alertanalitycs): s
     return UNKNOWN_TEAM_NAME;
   }
 
-  const responderTeam = teamName(teams, teamResponders[0].id);
-  return responderTeam === "athena-sus" ? responderTeam : UNKNOWN_TEAM_NAME;
+  return teamName(teams, teamResponders[0].id);
 };
 
 const sortByDate = (data: DateSortable[]): void => {
-  data.sort((a, b) => {
-    if (a.date < b.date) {
-      return -1;
-    }
-    if (a.date > b.date) {
-      return 1;
-    }
-
-    return 0;
-  });
-}
+  data.sort((a, b) => a.date.diff(b.date));
+};
 
 interface DateSortable {
   date: moment.Moment;
@@ -78,7 +67,7 @@ interface WeeklyAlertsByHour {
 }
 
 export interface AlertsByResponders {
-  dataPoints: { period: string; total: number; date: moment.Moment }[]
+  dataPoints: { period: string; total: number; date: moment.Moment }[];
   responders: string[];
 }
 
@@ -116,6 +105,10 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     this.businessHours = opts.businessHours;
   }
 
+  private filterAlertsByResponder(alerts: Alertanalitycs[], teams: Team[]): Alertanalitycs[] {
+    return alerts.filter(alert => respondingTeam(teams, alert) === "athena-sus");
+  }
+
   alertsByHour(context: Context): HourlyAlerts[] {
     const alertsBuckets: Record<string, number> = {};
 
@@ -124,7 +117,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       alertsBuckets[h] = 0;
     }
 
-    context.alerts.forEach(alert => {
+    this.filterAlertsByResponder(context.alerts, context.teams).forEach(alert => {
       const alertDate = moment(alert.createdAt);
 
       alertsBuckets[alertDate.hour()] += 1;
@@ -150,7 +143,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       alertsBuckets[d] = 0;
     }
 
-    context.alerts.forEach(alert => {
+    this.filterAlertsByResponder(context.alerts, context.teams).forEach(alert => {
       const alertDate = moment(alert.createdAt);
 
       alertsBuckets[alertDate.day()] += 1;
@@ -158,7 +151,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
 
     const data = Object.keys(alertsBuckets).map(day => (
       {
-        day: moment().day(day).format('dddd'),
+        day: moment().day(parseInt(day, 10)).format('dddd'),
         dayNum: parseInt(day, 10),
         total: alertsBuckets[day],
       }
@@ -194,7 +187,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       minDate.add(1, 'weeks');
     }
 
-    context.alerts.forEach(alert => {
+    this.filterAlertsByResponder(context.alerts, context.teams).forEach(alert => {
       const alertDate = moment(alert.createdAt);
       const week = `w${alertDate.isoWeek()} - ${alertDate.year()}`;
 
@@ -250,7 +243,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       minDate.add(1, 'weeks');
     }
 
-    context.alerts.forEach(alert => {
+    this.filterAlertsByResponder(context.alerts, context.teams).forEach(alert => {
       const alertDate = moment(alert.createdAt);
       const week = `w${alertDate.isoWeek()} - ${alertDate.year()}`;
 
@@ -285,12 +278,12 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     // add empty buckets for days with no alert
     for (let d = 0; d < 7; d++) {
       alertsBuckets[d] = {
-        total: 0,
         responders: {},
+        total: 0,
       };
     }
 
-    context.alerts.forEach(alert => {
+    this.filterAlertsByResponder(context.alerts, context.teams).forEach(alert => {
       const responder = respondingTeam(context.teams, alert);
       if (responder !== "athena-sus") return; // Skip non "athena-sus" responders
 
@@ -344,7 +337,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       minDate.add(1, 'weeks');
     }
 
-    context.alerts.forEach(alert => {
+    this.filterAlertsByResponder(context.alerts, context.teams).forEach(alert => {
       const responder = respondingTeam(context.teams, alert);
       if (responder !== "athena-sus") return; // Skip non "athena-sus" responders
 
@@ -398,7 +391,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       minDate.add(1, 'month');
     }
 
-    context.alerts.forEach(alert => {
+    this.filterAlertsByResponder(context.alerts, context.teams).forEach(alert => {
       const responder = respondingTeam(context.teams, alert);
       if (responder !== "athena-sus") return; // Skip non "athena-sus" responders
 
@@ -437,7 +430,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     const minDate = context.from.clone().startOf('quarter');
     const maxDate = context.to.clone().startOf('quarter');
 
-    // add empty buckets for quarters with no alert
+    // add empty buckets for quarters com no alert
     while (minDate <= maxDate) {
       const quarter = `Q${minDate.quarter()} - ${minDate.year()}`;
 
@@ -452,7 +445,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       minDate.add(1, 'quarter');
     }
 
-    context.alerts.forEach(alert => {
+    this.filterAlertsByResponder(context.alerts, context.teams).forEach(alert => {
       const responder = respondingTeam(context.teams, alert);
       if (responder !== "athena-sus") return; // Skip non "athena-sus" responders
 
@@ -506,7 +499,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       minDate.add(1, 'weeks');
     }
 
-    context.alerts.forEach(alert => {
+    this.filterAlertsByResponder(context.alerts, context.teams).forEach(alert => {
       const responder = respondingTeam(context.teams, alert);
       if (responder !== "athena-sus") return; // Skip non "athena-sus" responders
 
@@ -542,10 +535,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     const day = date.day();
     const hour = date.hour();
 
-    if (day === 6 || day === 0) { // is weekend
-      return false;
-    }
-
-    return hour >= this.businessHours.start && hour <= this.businessHours.end;
+    // Business hours are Monday to Friday, 9am to 6pm
+    return day >= 1 && day <= 5 && hour >= this.businessHours.start && hour < this.businessHours.end;
   }
 }
