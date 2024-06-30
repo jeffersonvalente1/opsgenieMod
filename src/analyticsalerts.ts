@@ -22,17 +22,14 @@ const teamName = (teams: Team[], teamId: string): string => {
 };
 
 export const respondingTeam = (teams: Team[], alertanalitycs: Alertanalitycs): string => {
-  //if (alertanalitycs.extraProperties.responders) {
-  //  return alertanalitycs.extraProperties.responders;
-  //}
-
   const teamResponders = alertanalitycs.responders.filter((responderRef) => responderRef.type === "team");
 
   if (teamResponders.length === 0) {
     return UNKNOWN_TEAM_NAME;
   }
 
-  return teamName(teams, teamResponders[0].id);
+  const responderTeam = teamName(teams, teamResponders[0].id);
+  return responderTeam === "athena-sus" ? responderTeam : UNKNOWN_TEAM_NAME;
 };
 
 const sortByDate = (data: DateSortable[]): void => {
@@ -294,10 +291,11 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
+      const responder = respondingTeam(context.teams, alert);
+      if (responder !== "athena-sus") return; // Skip non "athena-sus" responders
+
       const alertDate = moment(alert.createdAt);
       const day = alertDate.day();
-      const responder = respondingTeam(context.teams, alert);
-
       respondersMap[responder] = true;
 
       if (!alertsBuckets[day].responders[responder]) {
@@ -308,84 +306,18 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       alertsBuckets[day].total += 1;
     });
 
-    const data = Object.keys(alertsBuckets).map(day => {
-      const dataPoint: any = {
-        period: moment().day(day).format('dddd'),
-        dayNum: parseInt(day, 10),
+    const dataPoints: { period: string, total: number, date: moment.Moment }[] = Object.keys(alertsBuckets).map(day => (
+      {
+        period: moment().day(parseInt(day, 10)).format('dddd'),
         total: alertsBuckets[day].total,
-      };
+        date: moment().day(parseInt(day, 10)),
+      }
+    ));
 
-      Object.keys(respondersMap).forEach(responder => {
-        dataPoint[responder] = alertsBuckets[day].responders[responder] || 0;
-      });
-
-      return dataPoint;
-    });
-
-    // Mondays first.
-    data.sort((a, b) => (a.dayNum + 6) % 7 - (b.dayNum + 6) % 7);
+    dataPoints.sort((a, b) => (a.date.day() + 6) % 7 - (b.date.day() + 6) % 7);
 
     return {
-      dataPoints: data,
-      responders: Object.keys(respondersMap),
-    };
-  }
-
-  alertsByMonthAndResponder(context: Context): AlertsByResponders {
-    const alertsBuckets: Record<string, { responders: Record<string, number>, total: number, date: moment.Moment }> = {};
-    const respondersMap: Record<string, boolean> = {};
-
-    const from = context.from.clone();
-    const to = context.to.clone();
-
-    // add empty buckets for months with no alert
-    while (from <= to) {
-      const month = `${from.month() + 1}/${from.year()}`;
-
-      if (!alertsBuckets[month]) {
-        alertsBuckets[month] = {
-          responders: {},
-          total: 0,
-          date: from.clone(),
-        };
-      }
-
-      from.add(1, 'month');
-    }
-
-    context.alerts.forEach(alert => {
-      const alertDate = moment(alert.createdAt);
-      const month = `${alertDate.month() + 1}/${alertDate.year()}`;
-      const responder = respondingTeam(context.teams, alert);
-
-      respondersMap[responder] = true;
-
-      if (!alertsBuckets[month].responders[responder]) {
-        alertsBuckets[month].responders[responder] = 0;
-      }
-
-      alertsBuckets[month].responders[responder] += 1;
-      alertsBuckets[month].total += 1;
-    });
-
-    const data = Object.keys(alertsBuckets).map(month => {
-      const dataPoint: any = {
-        period: month,
-        total: alertsBuckets[month].total,
-        date: alertsBuckets[month].date,
-      };
-
-      Object.keys(respondersMap).forEach(responder => {
-        dataPoint[responder] = alertsBuckets[month].responders[responder] || 0;
-      });
-
-      return dataPoint;
-    });
-
-    sortByDate(data);
-
-    return {
-      dataPoints: data,
+      dataPoints: dataPoints,
       responders: Object.keys(respondersMap),
     };
   }
@@ -413,10 +345,11 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
+      const responder = respondingTeam(context.teams, alert);
+      if (responder !== "athena-sus") return; // Skip non "athena-sus" responders
+
       const alertDate = moment(alert.createdAt);
       const week = `w${alertDate.isoWeek()} - ${alertDate.year()}`;
-      const responder = respondingTeam(context.teams, alert);
-
       respondersMap[responder] = true;
 
       if (!alertsBuckets[week].responders[responder]) {
@@ -427,24 +360,72 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       alertsBuckets[week].total += 1;
     });
 
-    const data = Object.keys(alertsBuckets).map(week => {
-      const dataPoint: any = {
+    const dataPoints: { period: string, total: number, date: moment.Moment }[] = Object.keys(alertsBuckets).map(week => (
+      {
         period: week,
         total: alertsBuckets[week].total,
         date: alertsBuckets[week].date,
-      };
+      }
+    ));
 
-      Object.keys(respondersMap).forEach(responder => {
-        dataPoint[responder] = alertsBuckets[week].responders[responder] || 0;
-      });
-
-      return dataPoint;
-    });
-
-    sortByDate(data);
+    sortByDate(dataPoints);
 
     return {
-      dataPoints: data,
+      dataPoints: dataPoints,
+      responders: Object.keys(respondersMap),
+    };
+  }
+
+  alertsByMonthAndResponder(context: Context): AlertsByResponders {
+    const alertsBuckets: Record<string, { responders: Record<string, number>, total: number, date: moment.Moment }> = {};
+    const respondersMap: Record<string, boolean> = {};
+
+    const minDate = context.from.clone().startOf('month');
+    const maxDate = context.to.clone().startOf('month');
+
+    // add empty buckets for months with no alert
+    while (minDate <= maxDate) {
+      const month = minDate.format('MMMM');
+
+      if (!alertsBuckets[month]) {
+        alertsBuckets[month] = {
+          responders: {},
+          total: 0,
+          date: minDate.clone(),
+        };
+      }
+
+      minDate.add(1, 'month');
+    }
+
+    context.alerts.forEach(alert => {
+      const responder = respondingTeam(context.teams, alert);
+      if (responder !== "athena-sus") return; // Skip non "athena-sus" responders
+
+      const alertDate = moment(alert.createdAt);
+      const month = alertDate.format('MMMM');
+      respondersMap[responder] = true;
+
+      if (!alertsBuckets[month].responders[responder]) {
+        alertsBuckets[month].responders[responder] = 0;
+      }
+
+      alertsBuckets[month].responders[responder] += 1;
+      alertsBuckets[month].total += 1;
+    });
+
+    const dataPoints: { period: string, total: number, date: moment.Moment }[] = Object.keys(alertsBuckets).map(month => (
+      {
+        period: month,
+        total: alertsBuckets[month].total,
+        date: alertsBuckets[month].date,
+      }
+    ));
+
+    sortByDate(dataPoints);
+
+    return {
+      dataPoints: dataPoints,
       responders: Object.keys(respondersMap),
     };
   }
@@ -453,29 +434,30 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     const alertsBuckets: Record<string, { responders: Record<string, number>, total: number, date: moment.Moment }> = {};
     const respondersMap: Record<string, boolean> = {};
 
-    const from = context.from.clone();
-    const to = context.to.clone();
+    const minDate = context.from.clone().startOf('quarter');
+    const maxDate = context.to.clone().startOf('quarter');
 
-    // add empty buckets for quarters with no alert (let's be hopeful, might happen)
-    while (from <= to) {
-      const quarter = `Q${from.quarter()} - ${from.year()}`;
+    // add empty buckets for quarters with no alert
+    while (minDate <= maxDate) {
+      const quarter = `Q${minDate.quarter()} - ${minDate.year()}`;
 
       if (!alertsBuckets[quarter]) {
         alertsBuckets[quarter] = {
           responders: {},
           total: 0,
-          date: from.clone(),
+          date: minDate.clone(),
         };
       }
 
-      from.add(1, 'quarter');
+      minDate.add(1, 'quarter');
     }
 
     context.alerts.forEach(alert => {
+      const responder = respondingTeam(context.teams, alert);
+      if (responder !== "athena-sus") return; // Skip non "athena-sus" responders
+
       const alertDate = moment(alert.createdAt);
       const quarter = `Q${alertDate.quarter()} - ${alertDate.year()}`;
-      const responder = respondingTeam(context.teams, alert);
-
       respondersMap[responder] = true;
 
       if (!alertsBuckets[quarter].responders[responder]) {
@@ -486,37 +468,28 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       alertsBuckets[quarter].total += 1;
     });
 
-
-    const data = Object.keys(alertsBuckets).map(quarter => {
-      const dataPoint: any = {
+    const dataPoints: { period: string, total: number, date: moment.Moment }[] = Object.keys(alertsBuckets).map(quarter => (
+      {
         period: quarter,
         total: alertsBuckets[quarter].total,
         date: alertsBuckets[quarter].date,
-      };
+      }
+    ));
 
-      Object.keys(respondersMap).forEach(responder => {
-        dataPoint[responder] = alertsBuckets[quarter].responders[responder] || 0;
-      });
-
-      return dataPoint;
-    });
-
-    sortByDate(data);
+    sortByDate(dataPoints);
 
     return {
-      dataPoints: data,
+      dataPoints: dataPoints,
       responders: Object.keys(respondersMap),
     };
   }
 
   impactByWeekAndResponder(context: Context): AlertsByResponders {
-    const alertsBuckets: Record<string, { responders: Record<string, number[]>, durations: number[], date: moment.Moment }> = {};
+    const alertsBuckets: Record<string, { responders: Record<string, number>, total: number, date: moment.Moment }> = {};
     const respondersMap: Record<string, boolean> = {};
 
     const minDate = context.from.clone().startOf('isoWeek');
     const maxDate = context.to.clone().startOf('isoWeek');
-
-    const average = (durations: number[]) => durations.length === 0 ? 0 : durations.reduce((a, b) => a + b, 0) / durations.length;
 
     // add empty buckets for weeks with no alert
     while (minDate <= maxDate) {
@@ -525,7 +498,7 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
       if (!alertsBuckets[week]) {
         alertsBuckets[week] = {
           responders: {},
-          durations: [],
+          total: 0,
           date: minDate.clone(),
         };
       }
@@ -534,45 +507,45 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     }
 
     context.alerts.forEach(alert => {
-      const alertDate = moment(alert.createdAt);
-      const alertEnd = moment(alert.updatedAt);
-      const week = `w${alertDate.isoWeek()} - ${alertDate.year()}`;
       const responder = respondingTeam(context.teams, alert);
-      const impactDuration = alertEnd.diff(alertDate, 'minutes');
+      if (responder !== "athena-sus") return; // Skip non "athena-sus" responders
 
+      const alertDate = moment(alert.createdAt);
+      const week = `w${alertDate.isoWeek()} - ${alertDate.year()}`;
       respondersMap[responder] = true;
 
       if (!alertsBuckets[week].responders[responder]) {
-        alertsBuckets[week].responders[responder] = [];
+        alertsBuckets[week].responders[responder] = 0;
       }
 
-      alertsBuckets[week].responders[responder].push(impactDuration);
-      alertsBuckets[week].durations.push(impactDuration);
+      alertsBuckets[week].responders[responder] += 1;
+      alertsBuckets[week].total += 1;
     });
 
-    const data = Object.keys(alertsBuckets).map(week => {
-      const dataPoint: any = {
+    const dataPoints: { period: string, total: number, date: moment.Moment }[] = Object.keys(alertsBuckets).map(week => (
+      {
         period: week,
-        total: average(alertsBuckets[week].durations),
+        total: alertsBuckets[week].total,
         date: alertsBuckets[week].date,
-      };
+      }
+    ));
 
-      Object.keys(respondersMap).forEach(responder => {
-        dataPoint[responder] = alertsBuckets[week].responders[responder] ? average(alertsBuckets[week].responders[responder]) : 0;
-      });
-
-      return dataPoint;
-    });
-
-    sortByDate(data);
+    sortByDate(dataPoints);
 
     return {
-      dataPoints: data,
+      dataPoints: dataPoints,
       responders: Object.keys(respondersMap),
     };
   }
 
-  isBusinessHours(alertStartedAt: moment.Moment): boolean {
-    return alertStartedAt.hour() >= this.businessHours.start && alertStartedAt.hour() < this.businessHours.end;
+  private isBusinessHours(date: moment.Moment): boolean {
+    const day = date.day();
+    const hour = date.hour();
+
+    if (day === 6 || day === 0) { // is weekend
+      return false;
+    }
+
+    return hour >= this.businessHours.start && hour <= this.businessHours.end;
   }
 }
