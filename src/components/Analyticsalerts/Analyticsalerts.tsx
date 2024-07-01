@@ -46,7 +46,8 @@ export const Analyticsalerts = () => {
     from: from,
     to: to,
     alerts: data![0].filter(alert => moment(alert.createdAt).isAfter(from)),
-    teams: data![1],
+    //teams: data![1],
+    teams: data![1].filter(team => team.name === "athena-sus"),
   };
 
   const businessHours = {
