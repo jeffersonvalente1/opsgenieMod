@@ -26,7 +26,7 @@ export const respondingTeam = (teams: Team[], alertanalitycs: Alertanalitycs): s
 //    return alertanalitycs.extraProperties.responders;
 //  }
 
-  const teamResponders = alertanalitycs.responders.filter((responderRef) => responderRef.type === "team");
+  const teamResponders = alertanalitycs.responders.filter((responderRef) => responderRef.type === "team" && responderRef.id === "fd4ca533-3b2b-4629-96f8-a8884ca55e60");
 
   if (teamResponders.length === 0) {
     return UNKNOWN_TEAM_NAME;

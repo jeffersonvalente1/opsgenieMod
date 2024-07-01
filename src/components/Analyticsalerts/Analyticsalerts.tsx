@@ -45,7 +45,7 @@ export const Analyticsalerts = () => {
   const context: Context = {
     from: from,
     to: to,
-    alerts: data![0].filter(alert => moment(alert.createdAt).isAfter(from) && alert.responders[0].id === "fd4ca533-3b2b-4629-96f8-a8884ca55e60"),
+    alerts: data![0].filter(alert => moment(alert.createdAt).isAfter(from)),
     //teams: data![1],
     teams: data![1].filter(team => team.name === "athena-sus"),
   };
