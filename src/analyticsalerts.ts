@@ -2,7 +2,7 @@ import { createApiRef } from '@backstage/core-plugin-api';
 import moment from 'moment';
 import { Alertanalitycs, Team } from './types';
 
-const UNKNOWN_TEAM_NAME = "Unknown";
+const UNKNOWN_TEAM_NAME = "nome errado";
 
 export const DEFAULT_ALERTS_BUSINESS_HOURS_START = 9;
 export const DEFAULT_ALERTS_BUSINESS_HOURS_END = 18;
