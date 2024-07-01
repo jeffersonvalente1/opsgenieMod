@@ -13,9 +13,9 @@ export const alertanalyticsApiRef = createApiRef<AnalitycsalertsApi>({
 
 const teamName = (teams: Team[], teamId: string): string => {
   for (const team of teams) {
-    if (team.id === teamId) {
-      return team.name;
-    }
+    //if (team.id === teamId) {
+    return team.name;
+    //}
   }
 
   //return UNKNOWN_TEAM_NAME;
