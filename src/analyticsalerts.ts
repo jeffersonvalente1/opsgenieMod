@@ -2,12 +2,12 @@ import { createApiRef } from '@backstage/core-plugin-api';
 import moment from 'moment';
 import { Alertanalitycs, Team } from './types';
 
-const UNKNOWN_TEAM_NAME = "nome errado";
+const UNKNOWN_TEAM_NAME = "Unknown";
 
 export const DEFAULT_ALERTS_BUSINESS_HOURS_START = 9;
 export const DEFAULT_ALERTS_BUSINESS_HOURS_END = 18;
 
-export const alertanalyticsApiRef = createApiRef<AnalitycsalertsApi>({
+export const analyticsApiRef = createApiRef<AnalitycsalertsApi>({
   id: 'plugin.opsgenie.analyticsalerts',
 });
 
@@ -22,9 +22,9 @@ const teamName = (teams: Team[], teamId: string): string => {
 };
 
 export const respondingTeam = (teams: Team[], alertanalitycs: Alertanalitycs): string => {
-  //if (alertanalitycs.extraProperties.responders) {
-  //  return alertanalitycs.extraProperties.responders;
-  //}
+//  if (alertanalitycs.extraProperties.responders) {
+//    return alertanalitycs.extraProperties.responders;
+//  }
 
   const teamResponders = alertanalitycs.responders.filter((responderRef) => responderRef.type === "team");
 

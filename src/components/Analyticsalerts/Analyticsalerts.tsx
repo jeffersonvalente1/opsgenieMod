@@ -18,11 +18,12 @@ import { Context, DEFAULT_ALERTS_BUSINESS_HOURS_END, DEFAULT_ALERTS_BUSINESS_HOU
 import { InfoPanel } from '../InfoPanel';
 import { WeeklyImpactResponders } from './WeeklyImpactResponder';
 
+
 export const Analyticsalerts = () => {
   const configApi = useApi(configApiRef);
   const opsgenieApi = useApi(opsgenieApiRef);
 
-  const from = moment().subtract(1, 'month').startOf('week');
+  const from = moment().subtract(1, 'month').startOf('quarter');
   const to = moment();
 
   const { value: data, loading, error } = useAsync(async () => {
@@ -44,10 +45,8 @@ export const Analyticsalerts = () => {
   const context: Context = {
     from: from,
     to: to,
-    //alerts: data![0] as Alertanalitycs[],
-    alerts: data![0].filter(alert => moment(alert.createdAt).isAfter(from)),
-    //teams: data![1],
-    teams: data![1].filter(team => team.name === "athena-sus"),
+    alerts: data![0].filter(alert => moment(alert.impactStartDate).isAfter(from)),
+    teams: data![1],
   };
 
   const businessHours = {
@@ -59,7 +58,7 @@ export const Analyticsalerts = () => {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <InfoPanel
-          title="This graphs cover one month worth of alerts, from the current week to the same week last month."
+          title="This graphs cover one year worth of alerts, from the current quarter to the same quarter last year."
           message={
             <ul>
               <li>alerts from {from.format('LL')} to now are used</li>
