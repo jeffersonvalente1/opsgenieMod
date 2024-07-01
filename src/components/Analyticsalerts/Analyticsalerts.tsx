@@ -23,7 +23,7 @@ export const Analyticsalerts = () => {
   const configApi = useApi(configApiRef);
   const opsgenieApi = useApi(opsgenieApiRef);
 
-  const from = moment().subtract(1, 'month').startOf('quarter');
+  const from = moment().subtract(1, 'month').startOf('week');
   const to = moment();
 
   const { value: data, loading, error } = useAsync(async () => {
