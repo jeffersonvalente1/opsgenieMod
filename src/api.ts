@@ -118,7 +118,8 @@ export class OpsgenieApi implements Opsgenie {
   private readonly proxyPath: string;
   private readonly domain: string;
   private readonly readOnly: boolean;
-  private readonly TEAM_ID_ATHENA_SUS: string = 'fd4ca533-3b2b-4629-96f8-a8884ca55e60';
+  //private readonly TEAM_ID_ATHENA_SUS: string = 'fd4ca533-3b2b-4629-96f8-a8884ca55e60';
+  private readonly TEAM_ID_ATHENA_SUS: string[] = ['fd4ca533-3b2b-4629-96f8-a8884ca55e60', '33ec4c7a-b3ef-460e-92f2-55dd9b88a72c'];
 
   constructor(opts: Options) {
     this.discoveryApi = opts.discoveryApi;
@@ -191,7 +192,8 @@ export class OpsgenieApi implements Opsgenie {
       Alertanalitycs = Alertanalitycs.concat(response.data);
     }
   
-    return Alertanalitycs.filter(alert => alert.ownerTeamId === this.TEAM_ID_ATHENA_SUS); //TODO caso não dê para filtrar pela query, filtrar por aqui Alertanalitycs.filter(alert => alert.responders[0].type === 'team' && alert.responders[0].id === 'fd4ca533-3b2b-4629-96f8-a8884ca55e60')
+    //return Alertanalitycs.filter(alert => alert.ownerTeamId === this.TEAM_ID_ATHENA_SUS); //TODO caso não dê para filtrar pela query, filtrar por aqui Alertanalitycs.filter(alert => alert.responders[0].type === 'team' && alert.responders[0].id === 'fd4ca533-3b2b-4629-96f8-a8884ca55e60')
+    return Alertanalitycs.filter(alert => this.TEAM_ID_ATHENA_SUS.indexOf(alert.ownerTeamId) > 0);
   }
   async acknowledgeAlert(alert: Alert): Promise<void> {
     if (this.isReadOnly()) {
@@ -234,7 +236,8 @@ export class OpsgenieApi implements Opsgenie {
   async getTeams(): Promise<Team[]> {
     const response = await this.fetch<TeamsResponse>("/v2/teams");
 
-    return response.data;
+    //return response.data;
+    return response.data.filter(team => this.TEAM_ID_ATHENA_SUS.indexOf(team.id) > 0);
   }
 
   async getOnCall(scheduleId: string): Promise<OnCallParticipantRef[]> {
