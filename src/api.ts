@@ -152,7 +152,8 @@ export class OpsgenieApi implements Opsgenie {
 
   async getAlerts(opts?: AlertsFetchOpts): Promise<Alert[]> {
     const limit = opts?.limit || 50;
-    const query = opts?.query ? `&query=${opts?.query}` : '';
+    const query = `&query=team = fd4ca533-3b2b-4629-96f8-a8884ca55e60}`;
+    //const query = opts?.query ? `&query=${opts?.query}` : '';
     const response = await this.fetch<AlertsResponse>(`/v2/alerts?limit=${limit}${query}`);
 
     return response.data;
