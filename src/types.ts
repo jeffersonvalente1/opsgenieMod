@@ -42,6 +42,7 @@ export interface Alertanalitycs {
   createdAt: string;
   updatedAt: string;
   responders: ResponderRef[];
+  ownerTeamId: string;
 }
 
 export interface TeamRef {

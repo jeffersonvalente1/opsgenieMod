@@ -2,7 +2,7 @@ import { createApiRef } from '@backstage/core-plugin-api';
 import moment from 'moment';
 import { Alertanalitycs, Team } from './types';
 
-//const UNKNOWN_TEAM_NAME = "teste no time";
+const UNKNOWN_TEAM_NAME = "teste no time";
 
 export const DEFAULT_ALERTS_BUSINESS_HOURS_START = 9;
 export const DEFAULT_ALERTS_BUSINESS_HOURS_END = 18;
@@ -13,12 +13,12 @@ export const alertanalyticsApiRef = createApiRef<AnalitycsalertsApi>({
 
 const teamName = (teams: Team[], teamId: string): string => {
   for (const team of teams) {
-    //if (team.id === teamId) {
+      if (team.id === teamId) {
     return team.name;
-    //}
+    }
   }
 
-  //return UNKNOWN_TEAM_NAME;
+  return UNKNOWN_TEAM_NAME;
 };
 
 export const respondingTeam = (teams: Team[], alertanalitycs: Alertanalitycs): string => {
@@ -28,9 +28,9 @@ export const respondingTeam = (teams: Team[], alertanalitycs: Alertanalitycs): s
 
   const teamResponders = alertanalitycs.responders.filter((responderRef) => responderRef.type === "team" && responderRef.id === "fd4ca533-3b2b-4629-96f8-a8884ca55e60");
 
-  //if (teamResponders.length === 0) {
-    //return UNKNOWN_TEAM_NAME;
-  //}
+  if (teamResponders.length === 0) {
+    return UNKNOWN_TEAM_NAME;
+  }
 
   return teamName(teams, teamResponders[0].id);
 };

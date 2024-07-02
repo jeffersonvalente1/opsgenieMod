@@ -1,6 +1,7 @@
 import { Alert, Incident, Alertanalitycs,OnCallParticipantRef, Schedule, Team } from './types';
 import { createApiRef, DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 
+
 export const opsgenieApiRef = createApiRef<Opsgenie>({
   id: 'plugin.opsgenie.service',
 });
@@ -117,6 +118,7 @@ export class OpsgenieApi implements Opsgenie {
   private readonly proxyPath: string;
   private readonly domain: string;
   private readonly readOnly: boolean;
+  private readonly TEAM_ID_ATHENA_SUS: string = 'fd4ca533-3b2b-4629-96f8-a8884ca55e60';
 
   constructor(opts: Options) {
     this.discoveryApi = opts.discoveryApi;
@@ -177,19 +179,19 @@ export class OpsgenieApi implements Opsgenie {
     const limit = opts?.limit || 50;
     const sort = opts?.sort || 'createdAt';
     const order = opts?.order || 'desc';
-    const query = opts?.query ? `&query=${opts?.query}` : '';
-
+    const query = opts?.query ? `&query=${opts?.query}` : ''; //TODO verificar se há como incluir alguma cláusula de time aqui
+  
     let response = await this.fetch<AlertanalitycsResponse>(`/v2/alerts?limit=${limit}&sort=${sort}&order=${order}${query}`);
     let Alertanalitycs = response.data;
-
+  
     while (response.paging.next) {
       const parsedUrl = new URL(response.paging.next);
       response = await this.fetch(parsedUrl.pathname + parsedUrl.search);
-
+  
       Alertanalitycs = Alertanalitycs.concat(response.data);
     }
-
-    return Alertanalitycs;
+  
+    return Alertanalitycs.filter(alert => alert.ownerTeamId === this.TEAM_ID_ATHENA_SUS); //TODO caso não dê para filtrar pela query, filtrar por aqui Alertanalitycs.filter(alert => alert.responders[0].type === 'team' && alert.responders[0].id === 'fd4ca533-3b2b-4629-96f8-a8884ca55e60')
   }
   async acknowledgeAlert(alert: Alert): Promise<void> {
     if (this.isReadOnly()) {
