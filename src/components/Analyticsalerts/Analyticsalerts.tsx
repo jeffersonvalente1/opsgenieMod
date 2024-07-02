@@ -33,7 +33,7 @@ export const Analyticsalerts = () => {
     return Promise.all([
       opsgenieApi.getAlertanalitycs({
         limit: 100,
-        query: `createdAt < ${to.valueOf()} AND createdAt > ${from.valueOf()} AND team = ${team}`
+        query: `createdAt < ${to.valueOf()} AND createdAt > ${from.valueOf()} AND team = ${[team]}`
       }),
       opsgenieApi.getTeams(),
     ])
