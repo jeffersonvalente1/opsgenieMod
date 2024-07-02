@@ -17,7 +17,7 @@ const teamName = (teams: Team[], teamId: string): string => {
     return team.name;
     }
   }
-
+  console.log(`teamId: ${teamId} teams: ${teams}`);
   return UNKNOWN_TEAM_NAME;
 };
 
@@ -31,8 +31,9 @@ export const respondingTeam = (teams: Team[], alertanalitycs: Alertanalitycs): s
   if (teamResponders.length === 0) {
     return UNKNOWN_TEAM_NAME;
   }
-
+  
   return teamName(teams, teamResponders[0].id);
+  
 };
 
 const sortByDate = (data: DateSortable[]): void => {
