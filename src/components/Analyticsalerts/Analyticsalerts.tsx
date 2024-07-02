@@ -25,12 +25,13 @@ export const Analyticsalerts = () => {
 
   const from = moment().subtract(1, 'year').startOf('quarter');
   const to = moment();
+  const team = 'fd4ca533-3b2b-4629-96f8-a8884ca55e60'
 
   const { value: data, loading, error } = useAsync(async () => {
     return Promise.all([
       opsgenieApi.getAlertanalitycs({
         limit: 100,
-        query: `createdAt < ${to.valueOf()} AND createdAt > ${from.valueOf()}`
+        query: `createdAt < ${to.valueOf()} AND createdAt > ${from.valueOf()} AND team = ${team}`
       }),
       opsgenieApi.getTeams(),
     ])

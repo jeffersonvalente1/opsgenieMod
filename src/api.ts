@@ -23,7 +23,6 @@ type AlertanalitycsFetchOpts = {
   query?: string;
   sort?: string;
   order?: string;
-  team?: string;
 }
 
 export interface Opsgenie {
@@ -182,10 +181,9 @@ export class OpsgenieApi implements Opsgenie {
     const limit = opts?.limit || 50;
     const sort = opts?.sort || 'createdAt';
     const order = opts?.order || 'desc';
-    const team = opts?.team || 'fd4ca533-3b2b-4629-96f8-a8884ca55e60'
     const query = opts?.query ? `&query=${opts?.query}` : ''; //TODO verificar se há como incluir alguma cláusula de time aqui
   
-    let response = await this.fetch<AlertanalitycsResponse>(`/v2/alerts?limit=${limit}&sort=${sort}&order=${order}${query}`);
+    let response = await this.fetch<AlertanalitycsResponse>(`/v2/alerts?limit=${limit}&sort=${sort}&order=${order}&team=${team}${query}`);
     let Alertanalitycs = response.data;
   
     while (response.paging.next) {
