@@ -183,7 +183,7 @@ export class OpsgenieApi implements Opsgenie {
     const order = opts?.order || 'desc';
     const query = opts?.query ? `&query=${opts?.query}` : ''; //TODO verificar se há como incluir alguma cláusula de time aqui
   
-    let response = await this.fetch<AlertanalitycsResponse>(`/v2/alerts?limit=${limit}&sort=${sort}&order=${order}&team=${team}${query}`);
+    let response = await this.fetch<AlertanalitycsResponse>(`/v2/alerts?limit=${limit}&sort=${sort}&order=${order}${query}`);
     let Alertanalitycs = response.data;
   
     while (response.paging.next) {
