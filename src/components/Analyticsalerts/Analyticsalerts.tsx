@@ -25,7 +25,9 @@ export const Analyticsalerts = () => {
 
   const from = moment().subtract(1, 'year').startOf('quarter');
   const to = moment();
-  const team = 'fd4ca533-3b2b-4629-96f8-a8884ca55e60'
+  const team = ['fd4ca533-3b2b-4629-96f8-a8884ca55e60',
+                '33ec4c7a-b3ef-460e-92f2-55dd9b88a72c'
+                ]
 
   const { value: data, loading, error } = useAsync(async () => {
     return Promise.all([

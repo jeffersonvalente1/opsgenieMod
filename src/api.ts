@@ -118,8 +118,8 @@ export class OpsgenieApi implements Opsgenie {
   private readonly proxyPath: string;
   private readonly domain: string;
   private readonly readOnly: boolean;
-  private readonly TEAM_ID_ATHENA_SUS: string = 'fd4ca533-3b2b-4629-96f8-a8884ca55e60';
-  private readonly TEAM_ID_PNB_SUS: string = '33ec4c7a-b3ef-460e-92f2-55dd9b88a72c';
+  //private readonly TEAM_ID_ATHENA_SUS: string = 'fd4ca533-3b2b-4629-96f8-a8884ca55e60';
+  //private readonly TEAM_ID_PNB_SUS: string = '33ec4c7a-b3ef-460e-92f2-55dd9b88a72c';
   //private readonly TEAM_ID_ATHENA_SUS: string[] = ['fd4ca533-3b2b-4629-96f8-a8884ca55e60', '33ec4c7a-b3ef-460e-92f2-55dd9b88a72c'];
 
   constructor(opts: Options) {
@@ -192,8 +192,8 @@ export class OpsgenieApi implements Opsgenie {
   
       Alertanalitycs = Alertanalitycs.concat(response.data);
     }
-  
-    return Alertanalitycs.filter(alert => alert.ownerTeamId === this.TEAM_ID_ATHENA_SUS || alert.ownerTeamId === this.TEAM_ID_PNB_SUS); //TODO caso não dê para filtrar pela query, filtrar por aqui Alertanalitycs.filter(alert => alert.responders[0].type === 'team' && alert.responders[0].id === 'fd4ca533-3b2b-4629-96f8-a8884ca55e60')
+    return Alertanalitycs
+    //return Alertanalitycs.filter(alert => alert.ownerTeamId === this.TEAM_ID_ATHENA_SUS || alert.ownerTeamId === this.TEAM_ID_PNB_SUS); //TODO caso não dê para filtrar pela query, filtrar por aqui Alertanalitycs.filter(alert => alert.responders[0].type === 'team' && alert.responders[0].id === 'fd4ca533-3b2b-4629-96f8-a8884ca55e60')
     //return Alertanalitycs.filter(alert => this.TEAM_ID_ATHENA_SUS.indexOf(alert.ownerTeamId) > 0);
   }
   async acknowledgeAlert(alert: Alert): Promise<void> {
