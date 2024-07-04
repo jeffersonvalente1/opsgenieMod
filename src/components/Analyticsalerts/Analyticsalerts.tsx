@@ -26,7 +26,17 @@ export const Analyticsalerts = () => {
   const from = moment().subtract(1, 'year').startOf('quarter');
   const to = moment();
   //const teamString = 'fd4ca533-3b2b-4629-96f8-a8884ca55e60' //OR team = 33ec4c7a-b3ef-460e-92f2-55dd9b88a72c'
-  const teamString = configApi.getString('opsgenie.analytics.teamString');
+  
+  let teamString;
+  try {
+    teamString = configApi.getString('opsgenie.analytics.teamString');
+    console.log('Team String:', teamString);
+  } catch (error) {
+    console.error('Config error:', error.message);
+  }
+  //const teamString = configApi.getString('opsgenie.analytics.teamString');
+  
+  
   const { value: data, loading, error } = useAsync(async () => {
     return Promise.all([
       opsgenieApi.getAlertanalitycs({

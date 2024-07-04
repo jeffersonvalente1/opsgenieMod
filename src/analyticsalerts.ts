@@ -115,9 +115,11 @@ interface BusinessHours {
 
 export class AnalitycsalertsApi implements AnalyticAlerts {
   private readonly businessHours: BusinessHours;
+  private readonly teamString: string;
 
-  constructor(opts: { businessHours: BusinessHours }) {
+  constructor(opts: { businessHours: BusinessHours, teamString: string }) {
     this.businessHours = opts.businessHours;
+    this.teamString = opts.teamString;
   }
 
   alertsByHour(context: Context): HourlyAlerts[] {
