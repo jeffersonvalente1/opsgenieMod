@@ -109,7 +109,6 @@ type Options = {
    */
   proxyPath?: string;
 
-  teamsId: string;
 
 };
 
@@ -199,8 +198,7 @@ export class OpsgenieApi implements Opsgenie {
       Alertanalitycs = Alertanalitycs.concat(response.data);
     }
     return Alertanalitycs
-    //return Alertanalitycs.filter(alert => alert.ownerTeamId === this.TEAM_ID_ATHENA_SUS || alert.ownerTeamId === this.TEAM_ID_PNB_SUS); //TODO caso não dê para filtrar pela query, filtrar por aqui Alertanalitycs.filter(alert => alert.responders[0].type === 'team' && alert.responders[0].id === 'fd4ca533-3b2b-4629-96f8-a8884ca55e60')
-    //return Alertanalitycs.filter(alert => this.TEAM_ID_ATHENA_SUS.indexOf(alert.ownerTeamId) > 0);
+
   }
   async acknowledgeAlert(alert: Alert): Promise<void> {
     if (this.isReadOnly()) {
@@ -244,7 +242,7 @@ export class OpsgenieApi implements Opsgenie {
     const response = await this.fetch<TeamsResponse>("/v2/teams");
 
     return response.data;
-    //return response.data.filter(team => this.TEAM_ID_ATHENA_SUS.indexOf(team.id) > 0);
+
   }
 
   async getOnCall(scheduleId: string): Promise<OnCallParticipantRef[]> {

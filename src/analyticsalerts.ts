@@ -6,7 +6,6 @@ const UNKNOWN_TEAM_NAME = "Time desconhecido";
 
 export const DEFAULT_ALERTS_BUSINESS_HOURS_START = 9;
 export const DEFAULT_ALERTS_BUSINESS_HOURS_END = 18;
-export const DEFAULT_ALERTS_TEAMSID = ""
 
 export const alertanalyticsApiRef = createApiRef<AnalitycsalertsApi>({
   id: 'plugin.opsgenie.analyticsalerts',
