@@ -119,7 +119,7 @@ type TeamsId = string
 export class AnalitycsalertsApi implements AnalyticAlerts {
   private readonly businessHours: BusinessHours;
 
-  constructor(opts: { businessHours: BusinessHours; teamsId: TeamsId;}) {
+  constructor(opts: { businessHours: BusinessHours }) {
     this.businessHours = opts.businessHours;
   }
 

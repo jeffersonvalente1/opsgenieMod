@@ -88,6 +88,8 @@ interface TeamsResponse {
 
 const DEFAULT_PROXY_PATH = '/opsgenie/api';
 
+type TeamsId = string
+
 type Options = {
   discoveryApi: DiscoveryApi;
   identityApi: IdentityApi;
@@ -107,6 +109,9 @@ type Options = {
    * Path to use for requests via the proxy, defaults to /opsgenie/api
    */
   proxyPath?: string;
+
+  teamsId: TeamsId;
+
 };
 
 /**
@@ -128,6 +133,7 @@ export class OpsgenieApi implements Opsgenie {
     this.domain = opts.domain;
     this.proxyPath = opts.proxyPath ?? DEFAULT_PROXY_PATH;
     this.readOnly = opts.readOnly;
+
   }
 
   private async fetch<T = any>(input: string, init?: RequestInit): Promise<T> {

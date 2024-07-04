@@ -22,6 +22,7 @@ export const opsGeniePlugin = createPlugin({
       deps: { discoveryApi: discoveryApiRef, identityApi: identityApiRef, configApi: configApiRef },
       factory: ({ discoveryApi, identityApi, configApi }) => {
         return new OpsgenieApi({
+          teamsId: configApi.getString('opsgenie.analytics.teamsId') || DEFAULT_ALERTS_TEAMSID,
           discoveryApi: discoveryApi,
           identityApi: identityApi,
           domain: configApi.getString('opsgenie.domain'),
@@ -48,7 +49,6 @@ export const opsGeniePlugin = createPlugin({
       deps: { configApi: configApiRef },
       factory: ({ configApi }) => {
         return new AnalitycsalertsApi({
-          teamsId: configApi.getOptionalString('opsgenie.analytics.teamsId') || DEFAULT_ALERTS_TEAMSID,
           businessHours: {
             start: configApi.getOptionalNumber('opsgenie.analytics.businessHours.start') || DEFAULT_ALERTS_BUSINESS_HOURS_START,
             end: configApi.getOptionalNumber('opsgenie.analytics.businessHours.end') || DEFAULT_ALERTS_BUSINESS_HOURS_END,
