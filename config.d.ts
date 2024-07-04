@@ -39,5 +39,10 @@ export interface Config {
             teamString: string;
                 /** @visibility frontend */
         };
+        getalerts?: {
+            /** @visibility frontend */
+            teamString: string;
+                /** @visibility frontend */
+
     }
 }
