@@ -49,10 +49,10 @@ export const opsGeniePlugin = createPlugin({
       factory: ({ configApi }) => {
         return new AnalitycsalertsApi({
           businessHours: {
-            start: configApi.getOptionalNumber('opsgenie.analytics.businessHours.start') || DEFAULT_ALERTS_BUSINESS_HOURS_START,
-            end: configApi.getOptionalNumber('opsgenie.analytics.businessHours.end') || DEFAULT_ALERTS_BUSINESS_HOURS_END,
+            start: configApi.getOptionalNumber('opsgenie.analyticsalerts.businessHours.start') || DEFAULT_ALERTS_BUSINESS_HOURS_START,
+            end: configApi.getOptionalNumber('opsgenie.analyticsalerts.businessHours.end') || DEFAULT_ALERTS_BUSINESS_HOURS_END,
           },
-          teamString: configApi.getString('opsgenie.teamString'),
+          teamString: configApi.getString('opsgenie.analyticsalerts.teamString'),
         });
       },
     }),
