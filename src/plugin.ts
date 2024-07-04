@@ -22,7 +22,7 @@ export const opsGeniePlugin = createPlugin({
       deps: { discoveryApi: discoveryApiRef, identityApi: identityApiRef, configApi: configApiRef },
       factory: ({ discoveryApi, identityApi, configApi }) => {
         return new OpsgenieApi({
-          teamsId: configApi.getString('opsgenie.analytics.teamsId') || DEFAULT_ALERTS_TEAMSID,
+          teamsId: configApi.getString('opsgenie.teamsId') || DEFAULT_ALERTS_TEAMSID,
           discoveryApi: discoveryApi,
           identityApi: identityApi,
           domain: configApi.getString('opsgenie.domain'),

@@ -88,7 +88,6 @@ interface TeamsResponse {
 
 const DEFAULT_PROXY_PATH = '/opsgenie/api';
 
-type TeamsId = string
 
 type Options = {
   discoveryApi: DiscoveryApi;
@@ -110,7 +109,7 @@ type Options = {
    */
   proxyPath?: string;
 
-  teamsId: TeamsId;
+  teamsId: string;
 
 };
 
