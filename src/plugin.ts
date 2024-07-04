@@ -52,7 +52,7 @@ export const opsGeniePlugin = createPlugin({
             start: configApi.getOptionalNumber('opsgenie.analytics.businessHours.start') || DEFAULT_ALERTS_BUSINESS_HOURS_START,
             end: configApi.getOptionalNumber('opsgenie.analytics.businessHours.end') || DEFAULT_ALERTS_BUSINESS_HOURS_END,
           },
-          teamString: configApi.getString('opsgenie.analytics.teamString'),
+          teamString: configApi.getString('opsgenie.teamString'),
         });
       },
     }),
