@@ -48,7 +48,7 @@ export const opsGeniePlugin = createPlugin({
       deps: { configApi: configApiRef },
       factory: ({ configApi }) => {
         return new AnalitycsalertsApi({
-          teamsId: configApi.getString('opsgenie.teamsId') || DEFAULT_ALERTS_TEAMSID,
+          teamsId: configApi.getOptionalString('opsgenie.teamsId') || DEFAULT_ALERTS_TEAMSID,
           businessHours: {
             start: configApi.getOptionalNumber('opsgenie.analytics.businessHours.start') || DEFAULT_ALERTS_BUSINESS_HOURS_START,
             end: configApi.getOptionalNumber('opsgenie.analytics.businessHours.end') || DEFAULT_ALERTS_BUSINESS_HOURS_END,
