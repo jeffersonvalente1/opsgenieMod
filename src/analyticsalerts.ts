@@ -114,9 +114,7 @@ interface BusinessHours {
   end: number;
 }
 
-interface TeamsId {
-  id: string;
-}
+type TeamsId = string
 
 export class AnalitycsalertsApi implements AnalyticAlerts {
   private readonly businessHours: BusinessHours;
