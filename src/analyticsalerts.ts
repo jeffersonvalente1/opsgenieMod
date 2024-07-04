@@ -114,17 +114,15 @@ interface BusinessHours {
   end: number;
 }
 
-interface teamsId {
-  teamsId: string
+interface TeamsId {
+  id: string;
 }
 
 export class AnalitycsalertsApi implements AnalyticAlerts {
   private readonly businessHours: BusinessHours;
-  private readonly teamsId: teamsId;
 
-  constructor(opts: { businessHours: BusinessHours, teamsId: teamsId }) {
+  constructor(opts: { businessHours: BusinessHours, teamsId: TeamsId}) {
     this.businessHours = opts.businessHours;
-    this.teamsId = opts.teamsId;
   }
 
   alertsByHour(context: Context): HourlyAlerts[] {
