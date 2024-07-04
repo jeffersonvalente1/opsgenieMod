@@ -1,13 +1,10 @@
 import { Alert, Incident, Alertanalitycs,OnCallParticipantRef, Schedule, Team } from './types';
-import { createApiRef, DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
-import { configApiRef, useApi } from '@backstage/core-plugin-api';
+import { createApiRef, DiscoveryApi, IdentityApi} from '@backstage/core-plugin-api';
 
 
 export const opsgenieApiRef = createApiRef<Opsgenie>({
   id: 'plugin.opsgenie.service',
 });
-
-export const configApi = useApi(configApiRef);
 
 type AlertsFetchOpts = {
   limit?: number
@@ -159,8 +156,7 @@ export class OpsgenieApi implements Opsgenie {
   
   async getAlerts(opts?: AlertsFetchOpts): Promise<Alert[]> {
     const limit = opts?.limit || 50;
-    const teamString = configApi.getString('opsgenie.getalerts.teamString');
-    const query = `&query=team=${teamString}`;
+    const query = `&query=team=fd4ca533-3b2b-4629-96f8-a8884ca55e60`;
     //const query = opts?.query ? `&query=${opts?.query}` : '';
     const response = await this.fetch<AlertsResponse>(`/v2/alerts?limit=${limit}${query}`);
 
