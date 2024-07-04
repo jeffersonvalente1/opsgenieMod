@@ -121,7 +121,7 @@ interface TeamsId {
 export class AnalitycsalertsApi implements AnalyticAlerts {
   private readonly businessHours: BusinessHours;
 
-  constructor(opts: { businessHours: BusinessHours, teamsId: TeamsId}) {
+  constructor(opts: { businessHours: BusinessHours; teamsId: TeamsId;}) {
     this.businessHours = opts.businessHours;
   }
 
