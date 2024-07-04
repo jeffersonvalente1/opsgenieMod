@@ -2,10 +2,11 @@ import { createApiRef } from '@backstage/core-plugin-api';
 import moment from 'moment';
 import { Alertanalitycs, Team } from './types';
 
-const UNKNOWN_TEAM_NAME = "teste no time";
+const UNKNOWN_TEAM_NAME = "Time desconhecido";
 
 export const DEFAULT_ALERTS_BUSINESS_HOURS_START = 9;
 export const DEFAULT_ALERTS_BUSINESS_HOURS_END = 18;
+export const DEFAULT_ALERTS_TEAMSID = ""
 
 export const alertanalyticsApiRef = createApiRef<AnalitycsalertsApi>({
   id: 'plugin.opsgenie.analyticsalerts',
@@ -113,11 +114,17 @@ interface BusinessHours {
   end: number;
 }
 
+interface teamsId {
+  teamsId: string
+}
+
 export class AnalitycsalertsApi implements AnalyticAlerts {
   private readonly businessHours: BusinessHours;
+  private readonly teamsId: teamsId;
 
-  constructor(opts: { businessHours: BusinessHours }) {
+  constructor(opts: { businessHours: BusinessHours, teamsId: teamsId }) {
     this.businessHours = opts.businessHours;
+    this.teamsId = opts.teamsId;
   }
 
   alertsByHour(context: Context): HourlyAlerts[] {

@@ -14,7 +14,7 @@ import { opsgenieApiRef } from '../../api';
 import { useAsync } from 'react-use';
 import { Progress } from '@backstage/core-components';
 import { Alert } from '@material-ui/lab';
-import { Context, DEFAULT_ALERTS_BUSINESS_HOURS_END, DEFAULT_ALERTS_BUSINESS_HOURS_START } from '../../analyticsalerts';
+import { Context, DEFAULT_ALERTS_BUSINESS_HOURS_END, DEFAULT_ALERTS_BUSINESS_HOURS_START, DEFAULT_ALERTS_TEAMSID } from '../../analyticsalerts';
 import { InfoPanel } from '../InfoPanel';
 import { WeeklyImpactResponders } from './WeeklyImpactResponder';
 
@@ -25,14 +25,16 @@ export const Analyticsalerts = () => {
 
   const from = moment().subtract(1, 'year').startOf('quarter');
   const to = moment();
-  const team1 = 'fd4ca533-3b2b-4629-96f8-a8884ca55e60 OR team = fd4ca533-3b2b-4629-96f8-a8884ca55e60'
+  const teamsId = {
+    teamsId: configApi.getString('opsgenie.teamsId') || DEFAULT_ALERTS_TEAMSID,}
+  //const team1 = 'fd4ca533-3b2b-4629-96f8-a8884ca55e60 OR team = 33ec4c7a-b3ef-460e-92f2-55dd9b88a72c'
   //const team2 = '33ec4c7a-b3ef-460e-92f2-55dd9b88a72c'
 
   const { value: data, loading, error } = useAsync(async () => {
     return Promise.all([
       opsgenieApi.getAlertanalitycs({
         limit: 100,
-        query: `createdAt < ${to.valueOf()} AND createdAt > ${from.valueOf()} AND team = ${team1}` //OR team = ${team2}
+        query: `createdAt < ${to.valueOf()} AND createdAt > ${from.valueOf()} AND team = ${teamsId}` //OR team = ${team2}
       }),
       opsgenieApi.getTeams(),
     ])
