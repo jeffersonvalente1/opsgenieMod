@@ -26,7 +26,7 @@ export const opsGeniePlugin = createPlugin({
           identityApi: identityApi,
           domain: configApi.getString('opsgenie.domain'),
           readOnly: configApi.getOptionalBoolean('opsgenie.readOnly') ?? false,
-          proxyPath: configApi.getOptionalString('opsgenie.proxyPath'),
+          proxyPath: configApi.getOptionalString('opsgenie.proxyPath'),         
         });
       },
     }),
@@ -39,7 +39,7 @@ export const opsGeniePlugin = createPlugin({
           businessHours: {
             start: configApi.getOptionalNumber('opsgenie.analytics.businessHours.start') || DEFAULT_BUSINESS_HOURS_START,
             end: configApi.getOptionalNumber('opsgenie.analytics.businessHours.end') || DEFAULT_BUSINESS_HOURS_END,
-          },
+          }, 
         });
       },
     }),

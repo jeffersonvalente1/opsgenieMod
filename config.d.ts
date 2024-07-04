@@ -34,5 +34,10 @@ export interface Config {
                 end: number;  // 24h format
             };
         };
+        teamString: string;
+                /**
+         * Configuration options used to generate analytics graphs
+         * @visibility frontend
+         */
     }
 }
