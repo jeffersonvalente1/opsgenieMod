@@ -121,7 +121,11 @@ export class AnalitycsalertsApi implements AnalyticAlerts {
     this.businessHours = opts.businessHours;
     this.teamString = opts.teamString;
   }
-
+  
+  exampleMethod(context: Context): void {
+    console.log(`Team string: ${this.teamString}`);
+  }
+  
   alertsByHour(context: Context): HourlyAlerts[] {
     const alertsBuckets: Record<string, number> = {};
 
